@@ -29,7 +29,8 @@ Independently produced endian variants, malformed B+trees and out-of-range datas
 - [Pinned central source baseline](https://github.com/Infiltrator-Projects/Filesystems/tree/101026021d9088d80b7f0f472d9061f0e2c688a3/native/filesystems/befs)
 - [Native design](native/filesystems/befs/DESIGN.md)
 - [Migration and qualification plan](MIGRATION_STATUS.md)
+- [Original-format reference source](docs/BeFS.pages) and [PDF](docs/BeFS.pdf)
 - [Project philosophy](docs/PHILOSOPHY.md)
 - [Common ABI](https://github.com/Infiltrator-Projects/Libraries)
 
-Preserve inherited notices and licences on source extraction; new project-authored code uses GPL-3.0-or-later. The historical original-format reference and installed PDF manual remain pending. Central code or test results are not evidence of an independent provider.
+Preserve inherited notices and licences on source extraction; new project-authored code uses GPL-3.0-or-later. The original-format reference is available here; installation of the PDF remains pending. Central code or test results are not evidence of an independent provider.
