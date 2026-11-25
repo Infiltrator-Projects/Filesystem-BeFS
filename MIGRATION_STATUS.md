@@ -12,4 +12,4 @@ Source remains at [the pinned central tree](https://github.com/Infiltrator-Proje
 4. Expose mutation, format, check/repair and DEFRAG map/plan/execute/verify/recover only after format-specific allocation, ordering and interruption/recovery tests. Reject unsupported operations before writing.
 5. Validate exact packaged Common V2 ABI, hosted and import-free freestanding profiles, then actual BOOT and kernel consumer integration independently.
 
-All stages are pending in this repository. No capabilities or release are claimed. Manual PDF and packaging remain pending.
+All stages are pending in this repository. No capabilities or release are claimed. The [design and qualification reference](docs/BeFS.pdf) is available; the operational manual and packaging remain pending until an actual provider is qualified.
