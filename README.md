@@ -26,6 +26,8 @@ Independently produced endian variants, malformed B+trees and out-of-range datas
 
 ## 7. Technical references and provenance
 
+- [Design and qualification reference (PDF)](docs/BeFS.pdf) — design-stage reference only, with [editable page source](docs/BeFS.pages); not an operational manual.
+
 - [Pinned central source baseline](https://github.com/Infiltrator-Projects/Filesystems/tree/101026021d9088d80b7f0f472d9061f0e2c688a3/native/filesystems/befs)
 - [Native design](native/filesystems/befs/DESIGN.md)
 - [Migration and qualification plan](MIGRATION_STATUS.md)
