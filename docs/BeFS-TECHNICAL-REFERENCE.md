@@ -54,6 +54,8 @@ The original on-disk specification is independent of the Infiltrator provider. I
 
 ## Verification and references
 
+Test both byte orders, boundary group sizes, twelve direct extents plus indirect storage, double-indirect limits, inline symlinks, attribute expansion, B+tree splitting and duplicate-index keys. Check bitmap accounting against all file and metadata ownership; compare directory enumeration and file reads against independent BeOS or Haiku images. Exercise dirty-log recovery and interrupted allocation with fault injection. Original reference: Dominic Giampaolo, Practical File System Design: The Be File System, https://www.haiku-os.org/legacy-docs/practical-file-system-design.pdf . Cross-check Haiku src/add-ons/kernel/file_systems/bfs and Linux https://github.com/torvalds/linux/tree/v6.12/fs/befs .
+
 The original Linux header provides all three magic values, the inode and B-tree magic and the twelve-run datastream layout; cross-check both byte orders and group-boundary arithmetic.
 
 Retained original source provenance: https://github.com/Infiltrator-Projects/Filesystems/blob/101026021d9088d80b7f0f472d9061f0e2c688a3/native/filesystems/befs/linux/befs_fs_types.h (blob prefix 8019fde814).

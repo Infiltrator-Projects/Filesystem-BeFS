@@ -1,27 +1,24 @@
 0.06 0.15 0.23 rg 0 768 595 74 re f
-0.02 0.52 0.56 rg 43 764 90 4 re f
 1 1 1 rg BT /F2 10 Tf 43 811 Td (INFILTRATOR / FILESYSTEM ENGINEERING) Tj ET
 BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
 0.08 0.14 0.20 rg BT /F2 18 Tf 43 736 Td (Contents) Tj ET
-0.08 0.14 0.20 rg BT /F1 11 Tf 43 710 Td (1. Design context and scope) Tj ET
-0.08 0.14 0.20 rg BT /F1 11 Tf 43 694 Td (2. Superblock structure) Tj ET
-0.08 0.14 0.20 rg BT /F1 11 Tf 43 678 Td (3. Geometry and block runs) Tj ET
-0.08 0.14 0.20 rg BT /F1 11 Tf 43 662 Td (4. Allocation groups and bitmap) Tj ET
-0.08 0.14 0.20 rg BT /F1 11 Tf 43 646 Td (5. Inode field inventory) Tj ET
-0.08 0.14 0.20 rg BT /F1 11 Tf 43 630 Td (6. File data stream) Tj ET
-0.08 0.14 0.20 rg BT /F1 11 Tf 43 614 Td (7. Worked file lookup) Tj ET
-0.08 0.14 0.20 rg BT /F1 11 Tf 43 598 Td (8. B+tree stream header) Tj ET
-0.08 0.14 0.20 rg BT /F1 11 Tf 43 582 Td (9. Tree nodes and directory lookup) Tj ET
-0.08 0.14 0.20 rg BT /F1 11 Tf 43 566 Td (10. Attributes and indices) Tj ET
-0.08 0.14 0.20 rg BT /F1 11 Tf 43 550 Td (11. Journalling, writes and recovery) Tj ET
-0.08 0.14 0.20 rg BT /F1 11 Tf 43 534 Td (12. Implementation and qualification boundary) Tj ET
-0.08 0.14 0.20 rg BT /F1 11 Tf 43 518 Td (13. Verification and references) Tj ET
-0.75 0.80 0.84 RG 43 48 m 552 48 l S
-0.20 0.29 0.36 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 1) Tj ET
+0.08 0.14 0.20 rg BT /F1 11 Tf 43 711 Td (1. Design context and scope) Tj ET
+0.08 0.14 0.20 rg BT /F1 11 Tf 43 695 Td (2. Superblock structure) Tj ET
+0.08 0.14 0.20 rg BT /F1 11 Tf 43 679 Td (3. Geometry and block runs) Tj ET
+0.08 0.14 0.20 rg BT /F1 11 Tf 43 663 Td (4. Allocation groups and bitmap) Tj ET
+0.08 0.14 0.20 rg BT /F1 11 Tf 43 647 Td (5. Inode field inventory) Tj ET
+0.08 0.14 0.20 rg BT /F1 11 Tf 43 631 Td (6. File data stream) Tj ET
+0.08 0.14 0.20 rg BT /F1 11 Tf 43 615 Td (7. Worked file lookup) Tj ET
+0.08 0.14 0.20 rg BT /F1 11 Tf 43 599 Td (8. B+tree stream header) Tj ET
+0.08 0.14 0.20 rg BT /F1 11 Tf 43 583 Td (9. Tree nodes and directory lookup) Tj ET
+0.08 0.14 0.20 rg BT /F1 11 Tf 43 567 Td (10. Attributes and indices) Tj ET
+0.08 0.14 0.20 rg BT /F1 11 Tf 43 551 Td (11. Journalling, writes and recovery) Tj ET
+0.08 0.14 0.20 rg BT /F1 11 Tf 43 535 Td (12. Implementation and qualification boundary) Tj ET
+0.08 0.14 0.20 rg BT /F1 11 Tf 43 519 Td (13. Verification and references) Tj ET
+0.2 0.3 0.4 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 1) Tj ET
 
 %%Page
 0.06 0.15 0.23 rg 0 768 595 74 re f
-0.02 0.52 0.56 rg 43 764 90 4 re f
 1 1 1 rg BT /F2 10 Tf 43 811 Td (INFILTRATOR / FILESYSTEM ENGINEERING) Tj ET
 BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
 0.08 0.14 0.20 rg BT /F2 15 Tf 43 736 Td (1. Design context and scope) Tj ET
@@ -32,14 +29,12 @@ BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 650 Td (files: typed metadata and indexes support database-like queries over the namespace.) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 636 Td (Distinguish baseline BeOS format behaviour from Haiku extensions, and distinguish) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 622 Td (on-disk capability from the current provider's qualified operations.) Tj ET
-0.08 0.14 0.20 rg BT /F3 10 Tf 43 596 Td (The Haiku lineage retains the BeOS attribute-oriented model; it is unrelated to the) Tj ET
-0.08 0.14 0.20 rg BT /F3 10 Tf 43 582 Td (SCO boot filesystem despite the shared BFS abbreviation.) Tj ET
-0.75 0.80 0.84 RG 43 48 m 552 48 l S
-0.20 0.29 0.36 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 2) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 598 Td (The Haiku lineage retains the BeOS attribute-oriented model; it is unrelated to the) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 584 Td (SCO boot filesystem despite the shared BFS abbreviation.) Tj ET
+0.2 0.3 0.4 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 2) Tj ET
 
 %%Page
 0.06 0.15 0.23 rg 0 768 595 74 re f
-0.02 0.52 0.56 rg 43 764 90 4 re f
 1 1 1 rg BT /F2 10 Tf 43 811 Td (INFILTRATOR / FILESYSTEM ENGINEERING) Tj ET
 BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
 0.08 0.14 0.20 rg BT /F2 15 Tf 43 736 Td (2. Superblock structure) Tj ET
@@ -52,12 +47,10 @@ BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 622 Td (64-bit log start and end at 96 and 104, third magic 0x15B6830E at 112, root and) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 608 Td (index inode runs at 116 and 124. Check all three magics using the detected byte) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 594 Td (order.) Tj ET
-0.75 0.80 0.84 RG 43 48 m 552 48 l S
-0.20 0.29 0.36 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 3) Tj ET
+0.2 0.3 0.4 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 3) Tj ET
 
 %%Page
 0.06 0.15 0.23 rg 0 768 595 74 re f
-0.02 0.52 0.56 rg 43 764 90 4 re f
 1 1 1 rg BT /F2 10 Tf 43 811 Td (INFILTRATOR / FILESYSTEM ENGINEERING) Tj ET
 BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
 0.08 0.14 0.20 rg BT /F2 15 Tf 43 736 Td (3. Geometry and block runs) Tj ET
@@ -69,12 +62,10 @@ BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 636 Td (handling. With 4096-byte blocks and 8192 blocks per group, group 3, start 100,) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 622 Td (length 8 maps to blocks 24676 through 24683, beginning at byte 101072896. Never) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 608 Td (confuse block and byte positions.) Tj ET
-0.75 0.80 0.84 RG 43 48 m 552 48 l S
-0.20 0.29 0.36 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 4) Tj ET
+0.2 0.3 0.4 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 4) Tj ET
 
 %%Page
 0.06 0.15 0.23 rg 0 768 595 74 re f
-0.02 0.52 0.56 rg 43 764 90 4 re f
 1 1 1 rg BT /F2 10 Tf 43 811 Td (INFILTRATOR / FILESYSTEM ENGINEERING) Tj ET
 BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
 0.08 0.14 0.20 rg BT /F2 15 Tf 43 736 Td (4. Allocation groups and bitmap) Tj ET
@@ -87,12 +78,10 @@ BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 622 Td (locality near related metadata. On free, update bitmap and used-block accounting) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 608 Td (together under the transaction mechanism. Independently reconstruct ownership to) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 594 Td (detect false-free sectors or overlaps.) Tj ET
-0.75 0.80 0.84 RG 43 48 m 552 48 l S
-0.20 0.29 0.36 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 5) Tj ET
+0.2 0.3 0.4 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 5) Tj ET
 
 %%Page
 0.06 0.15 0.23 rg 0 768 595 74 re f
-0.02 0.52 0.56 rg 43 764 90 4 re f
 1 1 1 rg BT /F2 10 Tf 43 811 Td (INFILTRATOR / FILESYSTEM ENGINEERING) Tj ET
 BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
 0.08 0.14 0.20 rg BT /F2 15 Tf 43 736 Td (5. Inode field inventory) Tj ET
@@ -103,12 +92,10 @@ BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 650 Td (72, occupying 144 bytes; a short symbolic link may use this area instead of a data) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 636 Td (stream. Small-data records follow the 16-byte padding at offset 232. Validate the) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 622 Td (inode run and mode before interpreting the union.) Tj ET
-0.75 0.80 0.84 RG 43 48 m 552 48 l S
-0.20 0.29 0.36 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 6) Tj ET
+0.2 0.3 0.4 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 6) Tj ET
 
 %%Page
 0.06 0.15 0.23 rg 0 768 595 74 re f
-0.02 0.52 0.56 rg 43 764 90 4 re f
 1 1 1 rg BT /F2 10 Tf 43 811 Td (INFILTRATOR / FILESYSTEM ENGINEERING) Tj ET
 BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
 0.08 0.14 0.20 rg BT /F2 15 Tf 43 736 Td (6. File data stream) Tj ET
@@ -122,12 +109,10 @@ BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 608 Td (Double-indirect mapping uses an intermediate level and format-defined grouping) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 594 Td (constraints; check the exact version before assuming unrestricted descriptor) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 580 Td (lengths.) Tj ET
-0.75 0.80 0.84 RG 43 48 m 552 48 l S
-0.20 0.29 0.36 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 7) Tj ET
+0.2 0.3 0.4 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 7) Tj ET
 
 %%Page
 0.06 0.15 0.23 rg 0 768 595 74 re f
-0.02 0.52 0.56 rg 43 764 90 4 re f
 1 1 1 rg BT /F2 10 Tf 43 811 Td (INFILTRATOR / FILESYSTEM ENGINEERING) Tj ET
 BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
 0.08 0.14 0.20 rg BT /F2 15 Tf 43 736 Td (7. Worked file lookup) Tj ET
@@ -139,12 +124,10 @@ BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 636 Td (indirect allocation descriptors. Reject a descriptor that crosses a group boundary) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 622 Td (or an indirect run pointing into unrelated metadata. Limit traversal by the) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 608 Td (stream's capacity and verified bounds, not by arbitrary nonzero bytes.) Tj ET
-0.75 0.80 0.84 RG 43 48 m 552 48 l S
-0.20 0.29 0.36 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 8) Tj ET
+0.2 0.3 0.4 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 8) Tj ET
 
 %%Page
 0.06 0.15 0.23 rg 0 768 595 74 re f
-0.02 0.52 0.56 rg 43 764 90 4 re f
 1 1 1 rg BT /F2 10 Tf 43 811 Td (INFILTRATOR / FILESYSTEM ENGINEERING) Tj ET
 BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
 0.08 0.14 0.20 rg BT /F2 15 Tf 43 736 Td (8. B+tree stream header) Tj ET
@@ -155,12 +138,10 @@ BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 650 Td (type 0 represents strings; numeric key types include signed and unsigned 32/64-bit) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 636 Td (integers and floating-point values. Use the ordering rules for the specified key) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 622 Td (type; do not compare arbitrary numeric keys lexicographically.) Tj ET
-0.75 0.80 0.84 RG 43 48 m 552 48 l S
-0.20 0.29 0.36 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 9) Tj ET
+0.2 0.3 0.4 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 9) Tj ET
 
 %%Page
 0.06 0.15 0.23 rg 0 768 595 74 re f
-0.02 0.52 0.56 rg 43 764 90 4 re f
 1 1 1 rg BT /F2 10 Tf 43 811 Td (INFILTRATOR / FILESYSTEM ENGINEERING) Tj ET
 BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
 0.08 0.14 0.20 rg BT /F2 15 Tf 43 736 Td (9. Tree nodes and directory lookup) Tj ET
@@ -173,12 +154,10 @@ BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 622 Td (leaves identifying inodes. Descend sorted keys, following the overflow child for) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 608 Td (the upper range. Validate sibling links, strictly bounded depth and cycles.) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 594 Td (Duplicate-key index encodings need separate handling.) Tj ET
-0.75 0.80 0.84 RG 43 48 m 552 48 l S
-0.20 0.29 0.36 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 10) Tj ET
+0.2 0.3 0.4 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 10) Tj ET
 
 %%Page
 0.06 0.15 0.23 rg 0 768 595 74 re f
-0.02 0.52 0.56 rg 43 764 90 4 re f
 1 1 1 rg BT /F2 10 Tf 43 811 Td (INFILTRATOR / FILESYSTEM ENGINEERING) Tj ET
 BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
 0.08 0.14 0.20 rg BT /F2 15 Tf 43 736 Td (10. Attributes and indices) Tj ET
@@ -191,15 +170,13 @@ BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 622 Td (updates to the corresponding indexes. Preserve unsupported attributes rather than) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 608 Td (silently dropping them. Query results cannot be trusted if the index and inode) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 594 Td (disagree.) Tj ET
-0.08 0.14 0.20 rg BT /F3 10 Tf 43 568 Td (Preserve named attributes, index traversal and ordinary data streams as distinct) Tj ET
-0.08 0.14 0.20 rg BT /F3 10 Tf 43 554 Td (ownership and interpretation paths. A directory lookup must not treat an attribute) Tj ET
-0.08 0.14 0.20 rg BT /F3 10 Tf 43 540 Td (index as an ordinary directory tree.) Tj ET
-0.75 0.80 0.84 RG 43 48 m 552 48 l S
-0.20 0.29 0.36 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 11) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 570 Td (Preserve named attributes, index traversal and ordinary data streams as distinct) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 556 Td (ownership and interpretation paths. A directory lookup must not treat an attribute) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 542 Td (index as an ordinary directory tree.) Tj ET
+0.2 0.3 0.4 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 11) Tj ET
 
 %%Page
 0.06 0.15 0.23 rg 0 768 595 74 re f
-0.02 0.52 0.56 rg 43 764 90 4 re f
 1 1 1 rg BT /F2 10 Tf 43 811 Td (INFILTRATOR / FILESYSTEM ENGINEERING) Tj ET
 BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
 0.08 0.14 0.20 rg BT /F2 15 Tf 43 736 Td (11. Journalling, writes and recovery) Tj ET
@@ -212,12 +189,10 @@ BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 622 Td (presence of a log is not proof that arbitrary partial writes are safe. Recovery) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 608 Td (must never overwrite uncommitted or invalid targets. Full log record and commit) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 594 Td (encoding requires additional source-level verification for writable compatibility.) Tj ET
-0.75 0.80 0.84 RG 43 48 m 552 48 l S
-0.20 0.29 0.36 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 12) Tj ET
+0.2 0.3 0.4 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 12) Tj ET
 
 %%Page
 0.06 0.15 0.23 rg 0 768 595 74 re f
-0.02 0.52 0.56 rg 43 764 90 4 re f
 1 1 1 rg BT /F2 10 Tf 43 811 Td (INFILTRATOR / FILESYSTEM ENGINEERING) Tj ET
 BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
 0.08 0.14 0.20 rg BT /F2 15 Tf 43 736 Td (12. Implementation and qualification boundary) Tj ET
@@ -234,21 +209,28 @@ BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 566 Td (separate exact-source evidence. Current implementation and installation status) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 552 Td (belongs to this repository's README and qualification records, not the format's) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 538 Td (historical chronology.) Tj ET
-0.75 0.80 0.84 RG 43 48 m 552 48 l S
-0.20 0.29 0.36 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 13) Tj ET
+0.2 0.3 0.4 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 13) Tj ET
 
 %%Page
 0.06 0.15 0.23 rg 0 768 595 74 re f
-0.02 0.52 0.56 rg 43 764 90 4 re f
 1 1 1 rg BT /F2 10 Tf 43 811 Td (INFILTRATOR / FILESYSTEM ENGINEERING) Tj ET
 BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
 0.08 0.14 0.20 rg BT /F2 15 Tf 43 736 Td (13. Verification and references) Tj ET
-0.08 0.14 0.20 rg BT /F3 10 Tf 43 706 Td (The original Linux header provides all three magic values, the inode and B-tree) Tj ET
-0.08 0.14 0.20 rg BT /F3 10 Tf 43 692 Td (magic and the twelve-run datastream layout; cross-check both byte orders and) Tj ET
-0.08 0.14 0.20 rg BT /F3 10 Tf 43 678 Td (group-boundary arithmetic.) Tj ET
-0.08 0.14 0.20 rg BT /F3 10 Tf 43 652 Td (Retained original source provenance:) Tj ET
-0.08 0.14 0.20 rg BT /F3 10 Tf 43 638 Td (https://github.com/Infiltrator-Projects/Filesystems/blob/101026021d9088d80b7f0f472d) Tj ET
-0.08 0.14 0.20 rg BT /F3 10 Tf 43 624 Td (9061f0e2c688a3/native/filesystems/befs/linux/befs_fs_types.h \(blob prefix) Tj ET
-0.08 0.14 0.20 rg BT /F3 10 Tf 43 610 Td (8019fde814\).) Tj ET
-0.75 0.80 0.84 RG 43 48 m 552 48 l S
-0.20 0.29 0.36 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 14) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 706 Td (Test both byte orders, boundary group sizes, twelve direct extents plus indirect) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 692 Td (storage, double-indirect limits, inline symlinks, attribute expansion, B+tree) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 678 Td (splitting and duplicate-index keys. Check bitmap accounting against all file and) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 664 Td (metadata ownership; compare directory enumeration and file reads against) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 650 Td (independent BeOS or Haiku images. Exercise dirty-log recovery and interrupted) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 636 Td (allocation with fault injection. Original reference: Dominic Giampaolo, Practical) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 622 Td (File System Design: The Be File System,) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 608 Td (https://www.haiku-os.org/legacy-docs/practical-file-system-design.pdf . Cross-check) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 594 Td (Haiku src/add-ons/kernel/file_systems/bfs and Linux) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 580 Td (https://github.com/torvalds/linux/tree/v6.12/fs/befs .) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 556 Td (The original Linux header provides all three magic values, the inode and B-tree) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 542 Td (magic and the twelve-run datastream layout; cross-check both byte orders and) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 528 Td (group-boundary arithmetic.) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 504 Td (Retained original source provenance:) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 490 Td (https://github.com/Infiltrator-Projects/Filesystems/blob/101026021d9088d80b7f0f472d) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 476 Td (9061f0e2c688a3/native/filesystems/befs/linux/befs_fs_types.h \(blob prefix) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 462 Td (8019fde814\).) Tj ET
+0.2 0.3 0.4 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 14) Tj ET
