@@ -4,8 +4,6 @@
 
 The Be File System, written for BeOS by Dominic Giampaolo and Cyril Meurillon and introduced in BeOS R3, uses a 64-bit extent-based design with indexed attributes, B+tree directories and metadata journalling. Haiku maintains an open implementation of the format. This is unrelated to SCO UnixWare BFS. The goal is not just storing files: typed metadata and indexes support database-like queries over the namespace. Distinguish baseline BeOS format behaviour from Haiku extensions, and distinguish on-disk capability from the current provider's qualified operations.
 
-The Haiku lineage retains the BeOS attribute-oriented model; it is unrelated to the SCO boot filesystem despite the shared BFS abbreviation.
-
 ## Superblock structure
 
 The superblock is normally at volume byte 512; historical variants require checking alternative placement. All offsets here are relative to its start. The 32-byte volume name begins at 0. Magic 0x42465331 at 32, byte-order marker at 36, block size at 40, block shift at 44. Total and used blocks are 64-bit values at 48 and 56. Inode size at 64, second magic 0xDD121031 at 68, blocks per allocation group at 72, group shift at 76, number of groups at 80, flags at 84. Log block run at 88, 64-bit log start and end at 96 and 104, third magic 0x15B6830E at 112, root and index inode runs at 116 and 124. Check all three magics using the detected byte order.

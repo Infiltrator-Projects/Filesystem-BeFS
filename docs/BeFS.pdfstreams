@@ -22,15 +22,14 @@ BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
 1 1 1 rg BT /F2 10 Tf 43 811 Td (INFILTRATOR / FILESYSTEM ENGINEERING) Tj ET
 BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
 0.08 0.14 0.20 rg BT /F2 15 Tf 43 736 Td (1. Design context and scope) Tj ET
-0.08 0.14 0.20 rg BT /F3 10 Tf 43 706 Td (The Be File System, written for BeOS by Dominic Giampaolo and Cyril Meurillon and) Tj ET
-0.08 0.14 0.20 rg BT /F3 10 Tf 43 692 Td (introduced in BeOS R3, uses a 64-bit extent-based design with indexed attributes,) Tj ET
-0.08 0.14 0.20 rg BT /F3 10 Tf 43 678 Td (B+tree directories and metadata journalling. Haiku maintains an open implementation) Tj ET
-0.08 0.14 0.20 rg BT /F3 10 Tf 43 664 Td (of the format. This is unrelated to SCO UnixWare BFS. The goal is not just storing) Tj ET
-0.08 0.14 0.20 rg BT /F3 10 Tf 43 650 Td (files: typed metadata and indexes support database-like queries over the namespace.) Tj ET
-0.08 0.14 0.20 rg BT /F3 10 Tf 43 636 Td (Distinguish baseline BeOS format behaviour from Haiku extensions, and distinguish) Tj ET
-0.08 0.14 0.20 rg BT /F3 10 Tf 43 622 Td (on-disk capability from the current provider's qualified operations.) Tj ET
-0.08 0.14 0.20 rg BT /F3 10 Tf 43 598 Td (The Haiku lineage retains the BeOS attribute-oriented model; it is unrelated to the) Tj ET
-0.08 0.14 0.20 rg BT /F3 10 Tf 43 584 Td (SCO boot filesystem despite the shared BFS abbreviation.) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 706 Td (The Be File System, written for BeOS by Dominic Giampaolo and Cyril Meurillon) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 692 Td (and introduced in BeOS R3, uses a 64-bit extent-based design with indexed) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 678 Td (attributes, B+tree directories and metadata journalling. Haiku maintains an) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 664 Td (open implementation of the format. This is unrelated to SCO UnixWare BFS. The) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 650 Td (goal is not just storing files: typed metadata and indexes support) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 636 Td (database-like queries over the namespace. Distinguish baseline BeOS format) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 622 Td (behaviour from Haiku extensions, and distinguish on-disk capability from the) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 608 Td (current provider's qualified operations.) Tj ET
 0.2 0.3 0.4 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 2) Tj ET
 
 %%Page
