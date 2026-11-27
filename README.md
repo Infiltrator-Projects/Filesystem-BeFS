@@ -2,15 +2,15 @@
 
 ## 1. Purpose and format scope
 
-BeOS File System (BeFS), distinct from UnixWare BFS. This repository is the designated independent implementation home for InfiltratorOS. **Documentation and migration scaffold only: no independent runtime provider or release is present.**
+BeOS File System (BeFS), distinct from UnixWare BFS. This repository is the designated independent implementation home for InfiltratorOS. **Independent read-only Common V2 development provider. No installable release has been published.**
 
 ## 2. On-disk architecture and invariants
 
-Interpret native byte order, inode records, B+trees, direct and indirect datastream block runs and extended attributes. Check run arithmetic against allocation geometry before reading. These are design requirements for the native implementation, not claims about code already present in this repository.
+Interpret native byte order, inode records, B+trees, direct and indirect datastream block runs and extended attributes. Check run arithmetic against allocation geometry before reading. The initial reader implements the subset described below.
 
 ## 3. Common V2 implementation and capabilities
 
-No local Common V2 implementation or advertised operation set has yet been qualified. The target entry point is `infiltrator_filesystem_api_v2`, using bounded, partition-relative host I/O. Implement native probe first, then mount, stat, enumeration, read and volume query where applicable. Consumers must negotiate supported groups and profiles; an unsupported operation must not report success or delegate to a private driver.
+Native clean BeFS reader with both byte orders, validated allocation bitmap, direct, indirect and bounded double-indirect datastreams, native directory B+tree, label and metadata, and link reading. Hosted and import-free firmware targets share the engine.
 
 ## 4. Integrity, mutation, allocation and recovery
 
@@ -18,11 +18,11 @@ Mutation, formatting, check/repair and DEFRAG map/plan/execute/verify/recover re
 
 ## 5. Build, installation and release
 
-The target installation is `/System/Filesystems/BEFS.so` and `/System/Resources/Documentation/Filesystem-BeFS.pdf`. Neither file is currently distributed by this repository. Once the implementation qualifies, the intended release is a portable amd64 DEB and CPU-native source-first RUN, with GitHub's automatic source archive. No install or build command is advertised before an executable build exists.
+The target installation is `/System/Filesystems/BEFS.so` and `/System/Resources/Documentation/Filesystem-BeFS.pdf`. Neither file is currently distributed by this repository. Once the implementation qualifies, the intended release is a portable amd64 DEB and CPU-native source-first RUN, with GitHub's automatic source archive. With pinned Common headers under Libraries, use `make check` and `make carrier` for development. These are not installable releases.
 
 ## 6. Qualification and limitations
 
-Independently produced endian variants, malformed B+trees and out-of-range datastreams. Compare independent payloads and unchanged-image hashes; inject truncation, corruption and I/O faults. Establish exact-revision ABI, hosted and import-free freestanding qualification, then independently test BOOT and kernel integration. No local build, runtime or packaging qualification is claimed.
+[Passing hosted, freestanding and sanitizer CI](https://github.com/Infiltrator-Projects/Filesystem-BeFS/actions/runs/45972578631) at `cc977bd41e14a90de1435140f8cfa674affa7a9d`. Constructed fixtures qualify the tested subset; real BeOS/Haiku media, journal replay, full cross-object ownership, indexed attributes, long-link oracle tests and signed boot remain outstanding. No mutation or production packaging qualified.
 
 ## 7. Technical references and provenance
 

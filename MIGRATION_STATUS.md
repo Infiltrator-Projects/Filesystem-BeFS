@@ -1,3 +1,7 @@
-# BeFS independent development candidate
+# BeFS development qualification
 
-Native Be File System Common V2 reader, distinct from UnixWare BFS. Clean little- and big-endian profiles; x86 and PPC superblock placements; validated allocation bitmap and block runs; direct, indirect and bounded double-indirect data; native directory B+tree traversal; inline and long symbolic-link data. Source is common between hosted and import-free AMD64 firmware builds. Exact CI results qualify only tested revisions. Independent BeOS/Haiku media, indexed attributes, special inodes, journal replay, full cross-object ownership, mutation, formatting, defragmentation, signed firmware execution and production release remain outstanding.
+Native clean BeFS reader with both byte orders, validated allocation bitmap, direct, indirect and bounded double-indirect datastreams, native directory B+tree, label and metadata, and link reading.
+
+[Passing hosted, freestanding and sanitizer CI](https://github.com/Infiltrator-Projects/Filesystem-BeFS/actions/runs/45972578631) at `cc977bd41e14a90de1435140f8cfa674affa7a9d`. Constructed fixtures qualify the tested subset; real BeOS/Haiku media, journal replay, full cross-object ownership, indexed attributes, long-link oracle tests and signed boot remain outstanding.
+
+No mutation, format, repair, defragmentation or production release is qualified. BOOT matrix inclusion is not signed firmware execution evidence.
