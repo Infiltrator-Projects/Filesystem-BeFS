@@ -1,572 +1,254 @@
-0.05 0.13 0.22 rg 0 749 595 93 re f
-0.01 0.52 0.56 rg 50 747 116 5 re f
-1 1 1 rg BT /F2 11 Tf 50 807 Td (INFILTRATOR / FILESYSTEM ENGINEERING REFERENCE) Tj ET
-BT /F2 21 Tf 50 775 Td (BeFS - technical reference) Tj ET
-0.05 0.13 0.22 rg BT /F2 16 Tf 50 715 Td (Design context and scope) Tj ET
-BT /F1 11 Tf 15 TL 50 685 Td
-(The Be File System, written for BeOS by Dominic Giampaolo and Cyril Meurillon) Tj
-T* (and introduced in BeOS R3, uses a 64-bit extent-based design with indexed) Tj
-T* (attributes, B+tree directories and metadata journalling. Haiku maintains an) Tj
-T* (open implementation of the format. This is unrelated to SCO UnixWare BFS. The) Tj
-T* (goal is not just storing files: typed metadata and indexes support) Tj
-T* (database-like queries over the namespace. Distinguish baseline BeOS format) Tj
-T* (behaviour from Haiku extensions, and distinguish on-disk capability from the) Tj
-T* (current provider's qualified operations.) Tj
-ET
-0.05 0.13 0.22 rg BT /F1 9 Tf 50 42 Td (Engineering chapter 1 | Original format, not provider qualification) Tj ET
+0.06 0.15 0.23 rg 0 768 595 74 re f
+0.02 0.52 0.56 rg 43 764 90 4 re f
+1 1 1 rg BT /F2 10 Tf 43 811 Td (INFILTRATOR / FILESYSTEM ENGINEERING) Tj ET
+BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
+0.08 0.14 0.20 rg BT /F2 18 Tf 43 736 Td (Contents) Tj ET
+0.08 0.14 0.20 rg BT /F1 11 Tf 43 710 Td (1. Design context and scope) Tj ET
+0.08 0.14 0.20 rg BT /F1 11 Tf 43 694 Td (2. Superblock structure) Tj ET
+0.08 0.14 0.20 rg BT /F1 11 Tf 43 678 Td (3. Geometry and block runs) Tj ET
+0.08 0.14 0.20 rg BT /F1 11 Tf 43 662 Td (4. Allocation groups and bitmap) Tj ET
+0.08 0.14 0.20 rg BT /F1 11 Tf 43 646 Td (5. Inode field inventory) Tj ET
+0.08 0.14 0.20 rg BT /F1 11 Tf 43 630 Td (6. File data stream) Tj ET
+0.08 0.14 0.20 rg BT /F1 11 Tf 43 614 Td (7. Worked file lookup) Tj ET
+0.08 0.14 0.20 rg BT /F1 11 Tf 43 598 Td (8. B+tree stream header) Tj ET
+0.08 0.14 0.20 rg BT /F1 11 Tf 43 582 Td (9. Tree nodes and directory lookup) Tj ET
+0.08 0.14 0.20 rg BT /F1 11 Tf 43 566 Td (10. Attributes and indices) Tj ET
+0.08 0.14 0.20 rg BT /F1 11 Tf 43 550 Td (11. Journalling, writes and recovery) Tj ET
+0.08 0.14 0.20 rg BT /F1 11 Tf 43 534 Td (12. Implementation and qualification boundary) Tj ET
+0.08 0.14 0.20 rg BT /F1 11 Tf 43 518 Td (13. Verification and references) Tj ET
+0.75 0.80 0.84 RG 43 48 m 552 48 l S
+0.20 0.29 0.36 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 1) Tj ET
 
 %%Page
-0.05 0.13 0.22 rg 0 749 595 93 re f
-0.01 0.52 0.56 rg 50 747 116 5 re f
-1 1 1 rg BT /F2 11 Tf 50 807 Td (INFILTRATOR / FILESYSTEM ENGINEERING REFERENCE) Tj ET
-BT /F2 21 Tf 50 775 Td (BeFS - technical reference) Tj ET
-0.05 0.13 0.22 rg BT /F2 16 Tf 50 715 Td (Superblock structure) Tj ET
-BT /F1 11 Tf 15 TL 50 685 Td
-(The superblock is normally at volume byte 512; historical variants require) Tj
-T* (checking alternative placement. All offsets here are relative to its start.) Tj
-T* (The 32-byte volume name begins at 0. Magic 0x42465331 at 32, byte-order) Tj
-T* (marker at 36, block size at 40, block shift at 44. Total and used blocks are) Tj
-T* (64-bit values at 48 and 56. Inode size at 64, second magic 0xDD121031 at 68,) Tj
-T* (blocks per allocation group at 72, group shift at 76, number of groups at 80,) Tj
-T* (flags at 84. Log block run at 88, 64-bit log start and end at 96 and 104,) Tj
-T* (third magic 0x15B6830E at 112, root and index inode runs at 116 and 124.) Tj
-T* (Check all three magics using the detected byte order.) Tj
-ET
-0.05 0.13 0.22 rg BT /F1 9 Tf 50 42 Td (Engineering chapter 2 | Original format, not provider qualification) Tj ET
+0.06 0.15 0.23 rg 0 768 595 74 re f
+0.02 0.52 0.56 rg 43 764 90 4 re f
+1 1 1 rg BT /F2 10 Tf 43 811 Td (INFILTRATOR / FILESYSTEM ENGINEERING) Tj ET
+BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
+0.08 0.14 0.20 rg BT /F2 15 Tf 43 736 Td (1. Design context and scope) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 706 Td (The Be File System, written for BeOS by Dominic Giampaolo and Cyril Meurillon and) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 692 Td (introduced in BeOS R3, uses a 64-bit extent-based design with indexed attributes,) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 678 Td (B+tree directories and metadata journalling. Haiku maintains an open implementation) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 664 Td (of the format. This is unrelated to SCO UnixWare BFS. The goal is not just storing) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 650 Td (files: typed metadata and indexes support database-like queries over the namespace.) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 636 Td (Distinguish baseline BeOS format behaviour from Haiku extensions, and distinguish) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 622 Td (on-disk capability from the current provider's qualified operations.) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 596 Td (The Haiku lineage retains the BeOS attribute-oriented model; it is unrelated to the) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 582 Td (SCO boot filesystem despite the shared BFS abbreviation.) Tj ET
+0.75 0.80 0.84 RG 43 48 m 552 48 l S
+0.20 0.29 0.36 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 2) Tj ET
 
 %%Page
-0.05 0.13 0.22 rg 0 749 595 93 re f
-0.01 0.52 0.56 rg 50 747 116 5 re f
-1 1 1 rg BT /F2 11 Tf 50 807 Td (INFILTRATOR / FILESYSTEM ENGINEERING REFERENCE) Tj ET
-BT /F2 21 Tf 50 775 Td (BeFS - technical reference) Tj ET
-0.05 0.13 0.22 rg BT /F2 16 Tf 50 715 Td (Geometry and block runs) Tj ET
-BT /F1 11 Tf 15 TL 50 685 Td
-(BeFS supports both little- and big-endian volumes. Decode integers according) Tj
-T* (to the volume marker, not the host. Each eight-byte block run contains a) Tj
-T* (32-bit allocation group, 16-bit group-relative start and 16-bit length.) Tj
-T* (Translate its first block as group times 2 to the power ag_shift plus start.) Tj
-T* (The length must remain within the allocation group and volume; zero-length) Tj
-T* (and reserved runs need context-specific handling. With 4096-byte blocks and) Tj
-T* (8192 blocks per group, group 3, start 100, length 8 maps to blocks 24676) Tj
-T* (through 24683, beginning at byte 101072896. Never confuse block and byte) Tj
-T* (positions.) Tj
-ET
-0.05 0.13 0.22 rg BT /F1 9 Tf 50 42 Td (Engineering chapter 3 | Original format, not provider qualification) Tj ET
+0.06 0.15 0.23 rg 0 768 595 74 re f
+0.02 0.52 0.56 rg 43 764 90 4 re f
+1 1 1 rg BT /F2 10 Tf 43 811 Td (INFILTRATOR / FILESYSTEM ENGINEERING) Tj ET
+BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
+0.08 0.14 0.20 rg BT /F2 15 Tf 43 736 Td (2. Superblock structure) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 706 Td (The superblock is normally at volume byte 512; historical variants require checking) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 692 Td (alternative placement. All offsets here are relative to its start. The 32-byte) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 678 Td (volume name begins at 0. Magic 0x42465331 at 32, byte-order marker at 36, block) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 664 Td (size at 40, block shift at 44. Total and used blocks are 64-bit values at 48 and) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 650 Td (56. Inode size at 64, second magic 0xDD121031 at 68, blocks per allocation group at) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 636 Td (72, group shift at 76, number of groups at 80, flags at 84. Log block run at 88,) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 622 Td (64-bit log start and end at 96 and 104, third magic 0x15B6830E at 112, root and) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 608 Td (index inode runs at 116 and 124. Check all three magics using the detected byte) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 594 Td (order.) Tj ET
+0.75 0.80 0.84 RG 43 48 m 552 48 l S
+0.20 0.29 0.36 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 3) Tj ET
 
 %%Page
-0.05 0.13 0.22 rg 0 749 595 93 re f
-0.01 0.52 0.56 rg 50 747 116 5 re f
-1 1 1 rg BT /F2 11 Tf 50 807 Td (INFILTRATOR / FILESYSTEM ENGINEERING REFERENCE) Tj ET
-BT /F2 21 Tf 50 775 Td (BeFS - technical reference) Tj ET
-0.05 0.13 0.22 rg BT /F2 16 Tf 50 715 Td (Allocation groups and bitmap) Tj ET
-BT /F1 11 Tf 15 TL 50 685 Td
-(A volume is divided into allocation groups to distribute allocation and) Tj
-T* (reduce search cost. A persistent allocation bitmap follows the reserved) Tj
-T* (superblock area; each bit identifies whether one filesystem block is) Tj
-T* (occupied. Derive its size from validated group geometry, including any bitmap) Tj
-T* (rounding and padding prescribed by the particular implementation. Mark the) Tj
-T* (superblock, bitmap, journal, root/index inodes and other reserved blocks) Tj
-T* (before data allocation. Prefer contiguous runs and locality near related) Tj
-T* (metadata. On free, update bitmap and used-block accounting together under the) Tj
-T* (transaction mechanism. Independently reconstruct ownership to detect) Tj
-T* (false-free sectors or overlaps.) Tj
-ET
-0.05 0.13 0.22 rg BT /F1 9 Tf 50 42 Td (Engineering chapter 4 | Original format, not provider qualification) Tj ET
+0.06 0.15 0.23 rg 0 768 595 74 re f
+0.02 0.52 0.56 rg 43 764 90 4 re f
+1 1 1 rg BT /F2 10 Tf 43 811 Td (INFILTRATOR / FILESYSTEM ENGINEERING) Tj ET
+BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
+0.08 0.14 0.20 rg BT /F2 15 Tf 43 736 Td (3. Geometry and block runs) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 706 Td (BeFS supports both little- and big-endian volumes. Decode integers according to the) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 692 Td (volume marker, not the host. Each eight-byte block run contains a 32-bit allocation) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 678 Td (group, 16-bit group-relative start and 16-bit length. Translate its first block as) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 664 Td (group times 2 to the power ag_shift plus start. The length must remain within the) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 650 Td (allocation group and volume; zero-length and reserved runs need context-specific) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 636 Td (handling. With 4096-byte blocks and 8192 blocks per group, group 3, start 100,) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 622 Td (length 8 maps to blocks 24676 through 24683, beginning at byte 101072896. Never) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 608 Td (confuse block and byte positions.) Tj ET
+0.75 0.80 0.84 RG 43 48 m 552 48 l S
+0.20 0.29 0.36 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 4) Tj ET
 
 %%Page
-0.05 0.13 0.22 rg 0 749 595 93 re f
-0.01 0.52 0.56 rg 50 747 116 5 re f
-1 1 1 rg BT /F2 11 Tf 50 807 Td (INFILTRATOR / FILESYSTEM ENGINEERING REFERENCE) Tj ET
-BT /F2 21 Tf 50 775 Td (BeFS - technical reference) Tj ET
-0.05 0.13 0.22 rg BT /F2 16 Tf 50 715 Td (Inode field inventory) Tj ET
-BT /F1 11 Tf 15 TL 50 685 Td
-(The packed inode starts with magic 0x3BBE0AD9 at byte 0 and its own) Tj
-T* (eight-byte block run at 4. User and group IDs at 12 and 16, mode at 20, flags) Tj
-T* (at 24, 64-bit creation and modification times at 28 and 36, parent run at 44,) Tj
-T* (attributes run at 52, type at 60, inode size at 64 and reserved word at 68.) Tj
-T* (The data union starts at 72, occupying 144 bytes; a short symbolic link may) Tj
-T* (use this area instead of a data stream. Small-data records follow the 16-byte) Tj
-T* (padding at offset 232. Validate the inode run and mode before interpreting) Tj
-T* (the union.) Tj
-ET
-0.05 0.13 0.22 rg BT /F1 9 Tf 50 42 Td (Engineering chapter 5 | Original format, not provider qualification) Tj ET
+0.06 0.15 0.23 rg 0 768 595 74 re f
+0.02 0.52 0.56 rg 43 764 90 4 re f
+1 1 1 rg BT /F2 10 Tf 43 811 Td (INFILTRATOR / FILESYSTEM ENGINEERING) Tj ET
+BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
+0.08 0.14 0.20 rg BT /F2 15 Tf 43 736 Td (4. Allocation groups and bitmap) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 706 Td (A volume is divided into allocation groups to distribute allocation and reduce) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 692 Td (search cost. A persistent allocation bitmap follows the reserved superblock area;) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 678 Td (each bit identifies whether one filesystem block is occupied. Derive its size from) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 664 Td (validated group geometry, including any bitmap rounding and padding prescribed by) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 650 Td (the particular implementation. Mark the superblock, bitmap, journal, root/index) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 636 Td (inodes and other reserved blocks before data allocation. Prefer contiguous runs and) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 622 Td (locality near related metadata. On free, update bitmap and used-block accounting) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 608 Td (together under the transaction mechanism. Independently reconstruct ownership to) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 594 Td (detect false-free sectors or overlaps.) Tj ET
+0.75 0.80 0.84 RG 43 48 m 552 48 l S
+0.20 0.29 0.36 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 5) Tj ET
 
 %%Page
-0.05 0.13 0.22 rg 0 749 595 93 re f
-0.01 0.52 0.56 rg 50 747 116 5 re f
-1 1 1 rg BT /F2 11 Tf 50 807 Td (INFILTRATOR / FILESYSTEM ENGINEERING REFERENCE) Tj ET
-BT /F2 21 Tf 50 775 Td (BeFS - technical reference) Tj ET
-0.05 0.13 0.22 rg BT /F2 16 Tf 50 715 Td (File data stream) Tj ET
-BT /F1 11 Tf 15 TL 50 685 Td
-(Relative to the data-stream start, twelve direct runs occupy bytes 0 through) Tj
-T* (95. A 64-bit maximum direct range follows at 96, indirect run at 104, maximum) Tj
-T* (indirect range at 112, double-indirect run at 120, maximum double-indirect) Tj
-T* (range at 128 and logical file size at 136. The range boundaries are logical) Tj
-T* (byte positions; verify their monotonicity and correspondence with actual) Tj
-T* (allocation. The direct region is a sequence of runs, so subtract each run's) Tj
-T* (byte capacity until the requested offset falls within one. Indirect runs) Tj
-T* (contain additional block-run descriptors. Double-indirect mapping uses an) Tj
-T* (intermediate level and format-defined grouping constraints; check the exact) Tj
-T* (version before assuming unrestricted descriptor lengths.) Tj
-ET
-0.05 0.13 0.22 rg BT /F1 9 Tf 50 42 Td (Engineering chapter 6 | Original format, not provider qualification) Tj ET
+0.06 0.15 0.23 rg 0 768 595 74 re f
+0.02 0.52 0.56 rg 43 764 90 4 re f
+1 1 1 rg BT /F2 10 Tf 43 811 Td (INFILTRATOR / FILESYSTEM ENGINEERING) Tj ET
+BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
+0.08 0.14 0.20 rg BT /F2 15 Tf 43 736 Td (5. Inode field inventory) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 706 Td (The packed inode starts with magic 0x3BBE0AD9 at byte 0 and its own eight-byte) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 692 Td (block run at 4. User and group IDs at 12 and 16, mode at 20, flags at 24, 64-bit) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 678 Td (creation and modification times at 28 and 36, parent run at 44, attributes run at) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 664 Td (52, type at 60, inode size at 64 and reserved word at 68. The data union starts at) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 650 Td (72, occupying 144 bytes; a short symbolic link may use this area instead of a data) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 636 Td (stream. Small-data records follow the 16-byte padding at offset 232. Validate the) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 622 Td (inode run and mode before interpreting the union.) Tj ET
+0.75 0.80 0.84 RG 43 48 m 552 48 l S
+0.20 0.29 0.36 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 6) Tj ET
 
 %%Page
-0.05 0.13 0.22 rg 0 749 595 93 re f
-0.01 0.52 0.56 rg 50 747 116 5 re f
-1 1 1 rg BT /F2 11 Tf 50 807 Td (INFILTRATOR / FILESYSTEM ENGINEERING REFERENCE) Tj ET
-BT /F2 21 Tf 50 775 Td (BeFS - technical reference) Tj ET
-0.05 0.13 0.22 rg BT /F2 16 Tf 50 715 Td (Worked file lookup) Tj ET
-BT /F1 11 Tf 15 TL 50 685 Td
-(At 1024 bytes per block, assume the first direct run holds 3 blocks at) Tj
-T* (physical block 200 and the second holds 5 at block 900. Logical offset 4600) Tj
-T* (lies 1528 bytes into the second run. The mapped block is 901 with intra-block) Tj
-T* (offset 504; physical byte position is 923128. Only bytes below the inode's) Tj
-T* (logical size are visible. For an offset outside the maximum direct range,) Tj
-T* (subtract the direct range and walk the indirect allocation descriptors.) Tj
-T* (Reject a descriptor that crosses a group boundary or an indirect run pointing) Tj
-T* (into unrelated metadata. Limit traversal by the stream's capacity and) Tj
-T* (verified bounds, not by arbitrary nonzero bytes.) Tj
-ET
-0.05 0.13 0.22 rg BT /F1 9 Tf 50 42 Td (Engineering chapter 7 | Original format, not provider qualification) Tj ET
+0.06 0.15 0.23 rg 0 768 595 74 re f
+0.02 0.52 0.56 rg 43 764 90 4 re f
+1 1 1 rg BT /F2 10 Tf 43 811 Td (INFILTRATOR / FILESYSTEM ENGINEERING) Tj ET
+BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
+0.08 0.14 0.20 rg BT /F2 15 Tf 43 736 Td (6. File data stream) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 706 Td (Relative to the data-stream start, twelve direct runs occupy bytes 0 through 95. A) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 692 Td (64-bit maximum direct range follows at 96, indirect run at 104, maximum indirect) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 678 Td (range at 112, double-indirect run at 120, maximum double-indirect range at 128 and) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 664 Td (logical file size at 136. The range boundaries are logical byte positions; verify) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 650 Td (their monotonicity and correspondence with actual allocation. The direct region is) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 636 Td (a sequence of runs, so subtract each run's byte capacity until the requested offset) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 622 Td (falls within one. Indirect runs contain additional block-run descriptors.) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 608 Td (Double-indirect mapping uses an intermediate level and format-defined grouping) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 594 Td (constraints; check the exact version before assuming unrestricted descriptor) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 580 Td (lengths.) Tj ET
+0.75 0.80 0.84 RG 43 48 m 552 48 l S
+0.20 0.29 0.36 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 7) Tj ET
 
 %%Page
-0.05 0.13 0.22 rg 0 749 595 93 re f
-0.01 0.52 0.56 rg 50 747 116 5 re f
-1 1 1 rg BT /F2 11 Tf 50 807 Td (INFILTRATOR / FILESYSTEM ENGINEERING REFERENCE) Tj ET
-BT /F2 21 Tf 50 775 Td (BeFS - technical reference) Tj ET
-0.05 0.13 0.22 rg BT /F2 16 Tf 50 715 Td (B+tree stream header) Tj ET
-BT /F1 11 Tf 15 TL 50 685 Td
-(Directories and indexes are stored as B+tree data streams. At stream byte 0) Tj
-T* (is the B+tree header: magic 0x69F6C2E8 at 0, node size at 4, maximum depth at) Tj
-T* (8, key type at 12, 64-bit root node offset at 16, free node pointer at 24,) Tj
-T* (maximum stream size at 32. Node pointers are byte offsets in that stream, not) Tj
-T* (physical disk blocks. Key type 0 represents strings; numeric key types) Tj
-T* (include signed and unsigned 32/64-bit integers and floating-point values. Use) Tj
-T* (the ordering rules for the specified key type; do not compare arbitrary) Tj
-T* (numeric keys lexicographically.) Tj
-ET
-0.05 0.13 0.22 rg BT /F1 9 Tf 50 42 Td (Engineering chapter 8 | Original format, not provider qualification) Tj ET
+0.06 0.15 0.23 rg 0 768 595 74 re f
+0.02 0.52 0.56 rg 43 764 90 4 re f
+1 1 1 rg BT /F2 10 Tf 43 811 Td (INFILTRATOR / FILESYSTEM ENGINEERING) Tj ET
+BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
+0.08 0.14 0.20 rg BT /F2 15 Tf 43 736 Td (7. Worked file lookup) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 706 Td (At 1024 bytes per block, assume the first direct run holds 3 blocks at physical) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 692 Td (block 200 and the second holds 5 at block 900. Logical offset 4600 lies 1528 bytes) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 678 Td (into the second run. The mapped block is 901 with intra-block offset 504; physical) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 664 Td (byte position is 923128. Only bytes below the inode's logical size are visible. For) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 650 Td (an offset outside the maximum direct range, subtract the direct range and walk the) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 636 Td (indirect allocation descriptors. Reject a descriptor that crosses a group boundary) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 622 Td (or an indirect run pointing into unrelated metadata. Limit traversal by the) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 608 Td (stream's capacity and verified bounds, not by arbitrary nonzero bytes.) Tj ET
+0.75 0.80 0.84 RG 43 48 m 552 48 l S
+0.20 0.29 0.36 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 8) Tj ET
 
 %%Page
-0.05 0.13 0.22 rg 0 749 595 93 re f
-0.01 0.52 0.56 rg 50 747 116 5 re f
-1 1 1 rg BT /F2 11 Tf 50 807 Td (INFILTRATOR / FILESYSTEM ENGINEERING REFERENCE) Tj ET
-BT /F2 21 Tf 50 775 Td (BeFS - technical reference) Tj ET
-0.05 0.13 0.22 rg BT /F2 16 Tf 50 715 Td (Tree nodes and directory lookup) Tj ET
-BT /F1 11 Tf 15 TL 50 685 Td
-(A packed node header has left sibling, right sibling and overflow addresses) Tj
-T* (at offsets 0, 8 and 16, followed by 16-bit key count and total key bytes at) Tj
-T* (24 and 26. The variable key area follows the 28-byte header, then alignment) Tj
-T* (padding, cumulative 16-bit key-end positions and 64-bit values. Verify) Tj
-T* (alignment using the original implementation and ensure the tables fit within) Tj
-T* (the node. Internal values are child stream offsets; leaf values have) Tj
-T* (type-dependent semantics, with directory leaves identifying inodes. Descend) Tj
-T* (sorted keys, following the overflow child for the upper range. Validate) Tj
-T* (sibling links, strictly bounded depth and cycles. Duplicate-key index) Tj
-T* (encodings need separate handling.) Tj
-ET
-0.05 0.13 0.22 rg BT /F1 9 Tf 50 42 Td (Engineering chapter 9 | Original format, not provider qualification) Tj ET
+0.06 0.15 0.23 rg 0 768 595 74 re f
+0.02 0.52 0.56 rg 43 764 90 4 re f
+1 1 1 rg BT /F2 10 Tf 43 811 Td (INFILTRATOR / FILESYSTEM ENGINEERING) Tj ET
+BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
+0.08 0.14 0.20 rg BT /F2 15 Tf 43 736 Td (8. B+tree stream header) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 706 Td (Directories and indexes are stored as B+tree data streams. At stream byte 0 is the) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 692 Td (B+tree header: magic 0x69F6C2E8 at 0, node size at 4, maximum depth at 8, key type) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 678 Td (at 12, 64-bit root node offset at 16, free node pointer at 24, maximum stream size) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 664 Td (at 32. Node pointers are byte offsets in that stream, not physical disk blocks. Key) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 650 Td (type 0 represents strings; numeric key types include signed and unsigned 32/64-bit) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 636 Td (integers and floating-point values. Use the ordering rules for the specified key) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 622 Td (type; do not compare arbitrary numeric keys lexicographically.) Tj ET
+0.75 0.80 0.84 RG 43 48 m 552 48 l S
+0.20 0.29 0.36 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 9) Tj ET
 
 %%Page
-0.05 0.13 0.22 rg 0 749 595 93 re f
-0.01 0.52 0.56 rg 50 747 116 5 re f
-1 1 1 rg BT /F2 11 Tf 50 807 Td (INFILTRATOR / FILESYSTEM ENGINEERING REFERENCE) Tj ET
-BT /F2 21 Tf 50 775 Td (BeFS - technical reference) Tj ET
-0.05 0.13 0.22 rg BT /F2 16 Tf 50 715 Td (Attributes and indices) Tj ET
-BT /F1 11 Tf 15 TL 50 685 Td
-(Small attributes may be stored in the inode, using a 32-bit type, 16-bit name) Tj
-T* (size and 16-bit data size followed by the name and data. Larger attributes) Tj
-T* (live in separate attribute objects and streams reached through the inode's) Tj
-T* (attributes run. Their names and types are part of the on-disk semantics.) Tj
-T* (Index trees associate typed attribute values with matching inode identities;) Tj
-T* (duplicate values can refer to multiple objects. Namespace changes and) Tj
-T* (indexed-attribute edits require matching updates to the corresponding) Tj
-T* (indexes. Preserve unsupported attributes rather than silently dropping them.) Tj
-T* (Query results cannot be trusted if the index and inode disagree.) Tj
-ET
-0.05 0.13 0.22 rg BT /F1 9 Tf 50 42 Td (Engineering chapter 10 | Original format, not provider qualification) Tj ET
+0.06 0.15 0.23 rg 0 768 595 74 re f
+0.02 0.52 0.56 rg 43 764 90 4 re f
+1 1 1 rg BT /F2 10 Tf 43 811 Td (INFILTRATOR / FILESYSTEM ENGINEERING) Tj ET
+BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
+0.08 0.14 0.20 rg BT /F2 15 Tf 43 736 Td (9. Tree nodes and directory lookup) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 706 Td (A packed node header has left sibling, right sibling and overflow addresses at) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 692 Td (offsets 0, 8 and 16, followed by 16-bit key count and total key bytes at 24 and 26.) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 678 Td (The variable key area follows the 28-byte header, then alignment padding,) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 664 Td (cumulative 16-bit key-end positions and 64-bit values. Verify alignment using the) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 650 Td (original implementation and ensure the tables fit within the node. Internal values) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 636 Td (are child stream offsets; leaf values have type-dependent semantics, with directory) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 622 Td (leaves identifying inodes. Descend sorted keys, following the overflow child for) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 608 Td (the upper range. Validate sibling links, strictly bounded depth and cycles.) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 594 Td (Duplicate-key index encodings need separate handling.) Tj ET
+0.75 0.80 0.84 RG 43 48 m 552 48 l S
+0.20 0.29 0.36 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 10) Tj ET
 
 %%Page
-0.05 0.13 0.22 rg 0 749 595 93 re f
-0.01 0.52 0.56 rg 50 747 116 5 re f
-1 1 1 rg BT /F2 11 Tf 50 807 Td (INFILTRATOR / FILESYSTEM ENGINEERING REFERENCE) Tj ET
-BT /F2 21 Tf 50 775 Td (BeFS - technical reference) Tj ET
-0.05 0.13 0.22 rg BT /F2 16 Tf 50 715 Td (Journalling, writes and recovery) Tj ET
-BT /F1 11 Tf 15 TL 50 685 Td
-(The reserved log run is a circular metadata transaction log, with recorded) Tj
-T* (start and end positions. Clean and dirty states are encoded in the volume) Tj
-T* (flags. Mutation must reserve data and metadata, complete required data) Tj
-T* (writes, publish the logged metadata transaction in the format's required) Tj
-T* (order, then checkpoint to its final locations and advance the log. Mounting a) Tj
-T* (dirty volume requires validating and replaying committed records according to) Tj
-T* (the actual implementation; the mere presence of a log is not proof that) Tj
-T* (arbitrary partial writes are safe. Recovery must never overwrite uncommitted) Tj
-T* (or invalid targets. Full log record and commit encoding requires additional) Tj
-T* (source-level verification for writable compatibility.) Tj
-ET
-0.05 0.13 0.22 rg BT /F1 9 Tf 50 42 Td (Engineering chapter 11 | Original format, not provider qualification) Tj ET
+0.06 0.15 0.23 rg 0 768 595 74 re f
+0.02 0.52 0.56 rg 43 764 90 4 re f
+1 1 1 rg BT /F2 10 Tf 43 811 Td (INFILTRATOR / FILESYSTEM ENGINEERING) Tj ET
+BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
+0.08 0.14 0.20 rg BT /F2 15 Tf 43 736 Td (10. Attributes and indices) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 706 Td (Small attributes may be stored in the inode, using a 32-bit type, 16-bit name size) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 692 Td (and 16-bit data size followed by the name and data. Larger attributes live in) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 678 Td (separate attribute objects and streams reached through the inode's attributes run.) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 664 Td (Their names and types are part of the on-disk semantics. Index trees associate) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 650 Td (typed attribute values with matching inode identities; duplicate values can refer) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 636 Td (to multiple objects. Namespace changes and indexed-attribute edits require matching) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 622 Td (updates to the corresponding indexes. Preserve unsupported attributes rather than) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 608 Td (silently dropping them. Query results cannot be trusted if the index and inode) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 594 Td (disagree.) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 568 Td (Preserve named attributes, index traversal and ordinary data streams as distinct) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 554 Td (ownership and interpretation paths. A directory lookup must not treat an attribute) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 540 Td (index as an ordinary directory tree.) Tj ET
+0.75 0.80 0.84 RG 43 48 m 552 48 l S
+0.20 0.29 0.36 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 11) Tj ET
 
 %%Page
-0.05 0.13 0.22 rg 0 749 595 93 re f
-0.01 0.52 0.56 rg 50 747 116 5 re f
-1 1 1 rg BT /F2 11 Tf 50 807 Td (INFILTRATOR / FILESYSTEM ENGINEERING REFERENCE) Tj ET
-BT /F2 21 Tf 50 775 Td (BeFS - technical reference) Tj ET
-0.05 0.13 0.22 rg BT /F2 16 Tf 50 715 Td (Verification and references) Tj ET
-BT /F1 11 Tf 15 TL 50 685 Td
-(Test both byte orders, boundary group sizes, twelve direct extents plus) Tj
-T* (indirect storage, double-indirect limits, inline symlinks, attribute) Tj
-T* (expansion, B+tree splitting and duplicate-index keys. Check bitmap accounting) Tj
-T* (against all file and metadata ownership; compare directory enumeration and) Tj
-T* (file reads against independent BeOS or Haiku images. Exercise dirty-log) Tj
-T* (recovery and interrupted allocation with fault injection. Original reference:) Tj
-T* (Dominic Giampaolo, Practical File System Design: The Be File System,) Tj
-T* (https://www.haiku-os.org/legacy-docs/practical-file-system-design.pdf .) Tj
-T* (Cross-check Haiku src/add-ons/kernel/file_systems/bfs and Linux) Tj
-T* (fs/befs/befs_fs_types.h and btree.c. The historical appendices describe the) Tj
-T* (provider at earlier dates, not present qualification.) Tj
-ET
-0.05 0.13 0.22 rg BT /F1 9 Tf 50 42 Td (Engineering chapter 12 | Original format, not provider qualification) Tj ET
+0.06 0.15 0.23 rg 0 768 595 74 re f
+0.02 0.52 0.56 rg 43 764 90 4 re f
+1 1 1 rg BT /F2 10 Tf 43 811 Td (INFILTRATOR / FILESYSTEM ENGINEERING) Tj ET
+BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
+0.08 0.14 0.20 rg BT /F2 15 Tf 43 736 Td (11. Journalling, writes and recovery) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 706 Td (The reserved log run is a circular metadata transaction log, with recorded start) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 692 Td (and end positions. Clean and dirty states are encoded in the volume flags. Mutation) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 678 Td (must reserve data and metadata, complete required data writes, publish the logged) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 664 Td (metadata transaction in the format's required order, then checkpoint to its final) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 650 Td (locations and advance the log. Mounting a dirty volume requires validating and) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 636 Td (replaying committed records according to the actual implementation; the mere) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 622 Td (presence of a log is not proof that arbitrary partial writes are safe. Recovery) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 608 Td (must never overwrite uncommitted or invalid targets. Full log record and commit) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 594 Td (encoding requires additional source-level verification for writable compatibility.) Tj ET
+0.75 0.80 0.84 RG 43 48 m 552 48 l S
+0.20 0.29 0.36 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 12) Tj ET
 
 %%Page
-0.05 0.13 0.22 rg 0 749 595 93 re f
-0.01 0.52 0.56 rg 50 747 116 5 re f
-1 1 1 rg BT /F2 11 Tf 50 807 Td (INFILTRATOR / FILESYSTEM ENGINEERING REFERENCE) Tj ET
-BT /F2 21 Tf 50 775 Td (BeFS - technical reference) Tj ET
-0.05 0.13 0.22 rg BT /F2 16 Tf 50 715 Td (Historical reference appendices) Tj ET
-BT /F1 11 Tf 15 TL 50 685 Td
-(The following pages preserve both previous documents. Their dated) Tj
-T* (implementation statements are historical evidence, not a qualification claim.) Tj
-ET
-0.05 0.13 0.22 rg BT /F1 9 Tf 50 42 Td (Engineering chapter 13 | Original format, not provider qualification) Tj ET
+0.06 0.15 0.23 rg 0 768 595 74 re f
+0.02 0.52 0.56 rg 43 764 90 4 re f
+1 1 1 rg BT /F2 10 Tf 43 811 Td (INFILTRATOR / FILESYSTEM ENGINEERING) Tj ET
+BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
+0.08 0.14 0.20 rg BT /F2 15 Tf 43 736 Td (12. Implementation and qualification boundary) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 706 Td (The original on-disk specification is independent of the Infiltrator provider. Its) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 692 Td (sole public interface is Common V2) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 678 Td (\(https://github.com/Infiltrator-Projects/Libraries/blob/main/docs/FILESYSTEM_COMMON) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 664 Td (_ABI_V2.md\). Discover operation capabilities at runtime; a format signature, source) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 650 Td (function or export is not proof of qualification. Preserve distinct) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 636 Td (unsupported-feature, corrupt-media, I/O and stale-handle results. Check host) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 622 Td (geometry, transfer bounds and overlapping sector updates; require exclusive) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 608 Td (unmounted ownership and durable flush before raw mutation. Test Media and) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 594 Td (Defragmenter use the same provider operations, not separate format parsers. Hosted) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 580 Td (and freestanding profiles, release packages, BOOT and kernel integration require) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 566 Td (separate exact-source evidence. Current implementation and installation status) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 552 Td (belongs to this repository's README and qualification records, not the format's) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 538 Td (historical chronology.) Tj ET
+0.75 0.80 0.84 RG 43 48 m 552 48 l S
+0.20 0.29 0.36 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 13) Tj ET
 
 %%Page
-0.05 0.13 0.22 rg 0 749 595 93 re f
-0.04 0.54 0.60 rg 50 747 115 4 re f
-0.78 0.82 0.86 RG 0.6 w 50 50 m 545 50 l S
-BT /F2 9 Tf 0.62 0.86 0.90 rg 1 0 0 1 50 801 Tm (INFILTRATOR / ORIGINAL FILESYSTEM HISTORY AND DESIGN) Tj ET
-BT /F2 19 Tf 1 1 1 rg 1 0 0 1 50 771 Tm (BeOS File System) Tj ET
-BT /F1 8 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 34 Tm (Filesystem-BeFS / engineering reference) Tj ET
-BT /F1 8 Tf 0.07 0.16 0.23 rg 1 0 0 1 512 34 Tm (PAGE 01) Tj ET
-BT /F2 14 Tf 0.02 0.45 0.50 rg 1 0 0 1 50 711 Tm (HISTORY / ORIGINAL DESIGN / DISK FORMAT) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 676 Tm (BeOS filesystem, distinct from SCO BFS. This is a design contract, not a) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 660 Tm (claim of implemented capabilities.) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 630 Tm (Native provider design and original-format reference. No independent runtime) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 614 Tm (provider has yet been qualified.) Tj ET
-BT /F2 11 Tf 0.02 0.50 0.55 rg 1 0 0 1 50 584 Tm (CONCEPTUAL MEDIA MAP - NOT A SECTOR MAP) Tj ET
-0.05 0.36 0.47 rg 50 507 238 62 re f
-BT /F2 11 Tf 1 1 1 rg 1 0 0 1 62 533 Tm (Superblock) Tj ET
-0.05 0.36 0.47 rg 301 507 238 62 re f
-BT /F2 11 Tf 1 1 1 rg 1 0 0 1 313 533 Tm (Allocation groups) Tj ET
-0.05 0.36 0.47 rg 50 431 238 62 re f
-BT /F2 11 Tf 1 1 1 rg 1 0 0 1 62 457 Tm (Inode / B+tree) Tj ET
-0.05 0.36 0.47 rg 301 431 238 62 re f
-BT /F2 11 Tf 1 1 1 rg 1 0 0 1 313 457 Tm (Data runs) Tj ET
-BT /F2 10 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 404 Tm (History / architecture / allocation / integrity / implementation / tests) Tj ET
-
-%%Page
-0.05 0.13 0.22 rg 0 749 595 93 re f
-0.04 0.54 0.60 rg 50 747 115 4 re f
-0.78 0.82 0.86 RG 0.6 w 50 50 m 545 50 l S
-BT /F2 9 Tf 0.62 0.86 0.90 rg 1 0 0 1 50 801 Tm (INFILTRATOR / ORIGINAL FILESYSTEM HISTORY AND DESIGN) Tj ET
-BT /F2 19 Tf 1 1 1 rg 1 0 0 1 50 771 Tm (BeOS File System) Tj ET
-BT /F1 8 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 34 Tm (Filesystem-BeFS / engineering reference) Tj ET
-BT /F1 8 Tf 0.07 0.16 0.23 rg 1 0 0 1 512 34 Tm (PAGE 02) Tj ET
-BT /F2 14 Tf 0.02 0.45 0.50 rg 1 0 0 1 50 711 Tm (HISTORICAL CHRONOLOGY) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 676 Tm (BeFS originated with BeOS and its indexed, attribute-oriented design. Haiku's) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 660 Tm (BFS lineage is unrelated to UnixWare BFS.) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 630 Tm (The historic format and the InfiltratorOS implementation are distinct. An) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 614 Tm (external driver or archival utility is evidence, not a qualified production) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 598 Tm (provider.) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 568 Tm (https://github.com/torvalds/linux/tree/v6.12/fs/befs) Tj ET
-
-%%Page
-0.05 0.13 0.22 rg 0 749 595 93 re f
-0.04 0.54 0.60 rg 50 747 115 4 re f
-0.78 0.82 0.86 RG 0.6 w 50 50 m 545 50 l S
-BT /F2 9 Tf 0.62 0.86 0.90 rg 1 0 0 1 50 801 Tm (INFILTRATOR / ORIGINAL FILESYSTEM HISTORY AND DESIGN) Tj ET
-BT /F2 19 Tf 1 1 1 rg 1 0 0 1 50 771 Tm (BeOS File System) Tj ET
-BT /F1 8 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 34 Tm (Filesystem-BeFS / engineering reference) Tj ET
-BT /F1 8 Tf 0.07 0.16 0.23 rg 1 0 0 1 512 34 Tm (PAGE 03) Tj ET
-BT /F2 14 Tf 0.02 0.45 0.50 rg 1 0 0 1 50 711 Tm (ORIGINAL ON-DISK ARCHITECTURE) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 676 Tm (Endian-aware superblock, inode, B+tree directory/attribute indices,) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 660 Tm (datastream direct/indirect runs and file metadata. The single native C/C++) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 644 Tm (engine owns these format semantics; consumers provide bounded Common V2 host) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 628 Tm (services, never competing parsers.) Tj ET
-
-%%Page
-0.05 0.13 0.22 rg 0 749 595 93 re f
-0.04 0.54 0.60 rg 50 747 115 4 re f
-0.78 0.82 0.86 RG 0.6 w 50 50 m 545 50 l S
-BT /F2 9 Tf 0.62 0.86 0.90 rg 1 0 0 1 50 801 Tm (INFILTRATOR / ORIGINAL FILESYSTEM HISTORY AND DESIGN) Tj ET
-BT /F2 19 Tf 1 1 1 rg 1 0 0 1 50 771 Tm (BeOS File System) Tj ET
-BT /F1 8 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 34 Tm (Filesystem-BeFS / engineering reference) Tj ET
-BT /F1 8 Tf 0.07 0.16 0.23 rg 1 0 0 1 512 34 Tm (PAGE 04) Tj ET
-BT /F2 14 Tf 0.02 0.45 0.50 rg 1 0 0 1 50 711 Tm (ALLOCATION, INTEGRITY AND RECOVERY) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 676 Tm (Validate allocation-group geometry, block-run ranges, B+tree node links and) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 660 Tm (key ordering. Preserve attribute types and fail closed for unsupported) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 644 Tm (datastream or journal states. All arithmetic, offsets and lengths are checked) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 628 Tm (before I/O. Writable operations require exclusive access, explicit ordering,) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 612 Tm (flush and interruption/recovery evidence. Read-only operations leave the) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 596 Tm (medium unchanged.) Tj ET
-
-%%Page
-0.05 0.13 0.22 rg 0 749 595 93 re f
-0.04 0.54 0.60 rg 50 747 115 4 re f
-0.78 0.82 0.86 RG 0.6 w 50 50 m 545 50 l S
-BT /F2 9 Tf 0.62 0.86 0.90 rg 1 0 0 1 50 801 Tm (INFILTRATOR / ORIGINAL FILESYSTEM HISTORY AND DESIGN) Tj ET
-BT /F2 19 Tf 1 1 1 rg 1 0 0 1 50 771 Tm (BeOS File System) Tj ET
-BT /F1 8 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 34 Tm (Filesystem-BeFS / engineering reference) Tj ET
-BT /F1 8 Tf 0.07 0.16 0.23 rg 1 0 0 1 512 34 Tm (PAGE 05) Tj ET
-BT /F2 14 Tf 0.02 0.45 0.50 rg 1 0 0 1 50 711 Tm (DISK READ PATH / SOURCE EVIDENCE) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 676 Tm (Original editable source) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 660 Tm (\(https://github.com/Infiltrator-Projects/Filesystems/blob/101026021d9088d80b7) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 644 Tm (f0f472d9061f0e2c688a3/native/filesystems/befs/linux/befs_fs_types.h\) \(blob) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 628 Tm (8019fde814...\). The original source defines three superblock magic fields,) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 612 Tm (endian-aware disk words, twelve direct block runs, indirect and) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 596 Tm (double-indirect runs, inode magic 0x3bbe0ad9 and B-tree magic 0x69f6c2e8. Use) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 580 Tm (independently bounded byte readers rather than native struct casts. Validate) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 564 Tm (every run against allocation-group boundaries and every B+tree key offset) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 548 Tm (against its node. Keep named attributes, index traversal and ordinary data) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 532 Tm (streams separate.) Tj ET
-
-%%Page
-0.05 0.13 0.22 rg 0 749 595 93 re f
-0.04 0.54 0.60 rg 50 747 115 4 re f
-0.78 0.82 0.86 RG 0.6 w 50 50 m 545 50 l S
-BT /F2 9 Tf 0.62 0.86 0.90 rg 1 0 0 1 50 801 Tm (INFILTRATOR / ORIGINAL FILESYSTEM HISTORY AND DESIGN) Tj ET
-BT /F2 19 Tf 1 1 1 rg 1 0 0 1 50 771 Tm (BeOS File System) Tj ET
-BT /F1 8 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 34 Tm (Filesystem-BeFS / engineering reference) Tj ET
-BT /F1 8 Tf 0.07 0.16 0.23 rg 1 0 0 1 512 34 Tm (PAGE 06) Tj ET
-BT /F2 14 Tf 0.02 0.45 0.50 rg 1 0 0 1 50 711 Tm (COMMON V2 IMPLEMENTATION BOUNDARY) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 676 Tm (Only infiltrator_filesystem_api_v2 is public. Target the genuine) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 660 Tm (PROBE/MOUNT/UNMOUNT/STAT/LIST/READ operations first; negotiate actual) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 644 Tm (supported operation masks. VOLUME, METADATA and DEFRAG operations \(including) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 628 Tm (MAP, PLAN, EXECUTE, VERIFY, RECOVER\) are individually qualified or refused.) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 612 Tm (Test Media uses the same provider's qualified format and namespace) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 596 Tm (operations. No FUSE, legacy ABI, private driver or kernel proxy. Hosted and) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 580 Tm (import-free freestanding profiles share the format engine, with generic) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 564 Tm (environment-specific host services.) Tj ET
-
-%%Page
-0.05 0.13 0.22 rg 0 749 595 93 re f
-0.04 0.54 0.60 rg 50 747 115 4 re f
-0.78 0.82 0.86 RG 0.6 w 50 50 m 545 50 l S
-BT /F2 9 Tf 0.62 0.86 0.90 rg 1 0 0 1 50 801 Tm (INFILTRATOR / ORIGINAL FILESYSTEM HISTORY AND DESIGN) Tj ET
-BT /F2 19 Tf 1 1 1 rg 1 0 0 1 50 771 Tm (BeOS File System) Tj ET
-BT /F1 8 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 34 Tm (Filesystem-BeFS / engineering reference) Tj ET
-BT /F1 8 Tf 0.07 0.16 0.23 rg 1 0 0 1 512 34 Tm (PAGE 07) Tj ET
-BT /F2 14 Tf 0.02 0.45 0.50 rg 1 0 0 1 50 711 Tm (ENGINEERING ACCEPTANCE / HOST I/O) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 676 Tm (- A valid CORE descriptor with a real PROBE is mandatory. Every optional) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 660 Tm (operation has its own capability bit and non-null qualified callback;) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 644 Tm (unavailable operations have neither. Recognised format, unsupported feature,) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 628 Tm (corruption, host I/O failure and stale handles remain distinct outcomes.) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 598 Tm (- Use Common's sector-aligned bounded byte helpers. Validate partition) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 582 Tm (extent, logical/physical sector geometry and maximum transfer before reading.) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 566 Tm (Serialize overlapping read/modify/write sectors; request explicit flush) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 550 Tm (barriers. Never infer exclusivity from flags alone; require real exclusive) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 534 Tm (unmounted ownership before formatting or raw mutation. Require the Common) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 518 Tm (entropy service when the format needs a unique identity.) Tj ET
-
-%%Page
-0.05 0.13 0.22 rg 0 749 595 93 re f
-0.04 0.54 0.60 rg 50 747 115 4 re f
-0.78 0.82 0.86 RG 0.6 w 50 50 m 545 50 l S
-BT /F2 9 Tf 0.62 0.86 0.90 rg 1 0 0 1 50 801 Tm (INFILTRATOR / ORIGINAL FILESYSTEM HISTORY AND DESIGN) Tj ET
-BT /F2 19 Tf 1 1 1 rg 1 0 0 1 50 771 Tm (BeOS File System) Tj ET
-BT /F1 8 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 34 Tm (Filesystem-BeFS / engineering reference) Tj ET
-BT /F1 8 Tf 0.07 0.16 0.23 rg 1 0 0 1 512 34 Tm (PAGE 08) Tj ET
-BT /F2 14 Tf 0.02 0.45 0.50 rg 1 0 0 1 50 711 Tm (CONSUMERS / RELOCATION / TEST MEDIA) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 676 Tm (- Qualify hosted and import-free freestanding profiles separately; enforce) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 660 Tm (module identity and trust, exact export set and actual packaged bytes. BOOT) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 644 Tm (and kernel are generic loaders; BOOT uses the same file in) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 628 Tm (/EFI/InfiltratorOS/BOOT/drivers_x64/, with the installed canonical copy in) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 612 Tm (/System/Filesystems/. No per-format .ko/.efi, FUSE, proxy, legacy ABI,) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 596 Tm (external formatter or consumer-side parsing substitutes for the engine.) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 566 Tm (- Test Media must format and populate through actual V2 FORMAT/CREATE/WRITE) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 550 Tm (operations; an independent formatter/reader may be a test oracle only, never) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 534 Tm (production fallback. Defragmentation maps, plans, execution, verification and) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 518 Tm (recovery require independent proof of ownership, data preservation and) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 502 Tm (interruption safety. Where not implemented they remain absent.) Tj ET
-
-%%Page
-0.05 0.13 0.22 rg 0 749 595 93 re f
-0.04 0.54 0.60 rg 50 747 115 4 re f
-0.78 0.82 0.86 RG 0.6 w 50 50 m 545 50 l S
-BT /F2 9 Tf 0.62 0.86 0.90 rg 1 0 0 1 50 801 Tm (INFILTRATOR / ORIGINAL FILESYSTEM HISTORY AND DESIGN) Tj ET
-BT /F2 19 Tf 1 1 1 rg 1 0 0 1 50 771 Tm (BeOS File System) Tj ET
-BT /F1 8 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 34 Tm (Filesystem-BeFS / engineering reference) Tj ET
-BT /F1 8 Tf 0.07 0.16 0.23 rg 1 0 0 1 512 34 Tm (PAGE 09) Tj ET
-BT /F2 14 Tf 0.02 0.45 0.50 rg 1 0 0 1 50 711 Tm (VALIDATION, RECOVERY AND COMPATIBILITY) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 676 Tm (Exercise independent BeFS images of supported byte orders, multiple) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 660 Tm (datastream levels, directories and attributes; corrupt node pointers and run) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 644 Tm (lengths. Compare file bytes against an independent oracle, hash unchanged) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 628 Tm (read-only images, inject short I/O, corruption and interruption; validate) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 612 Tm (exact published module separately in BOOT and kernel. Use disposable media) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 596 Tm (only. No new independent binary or test pass is claimed.) Tj ET
-
-%%Page
-0.05 0.13 0.22 rg 0 749 595 93 re f
-0.04 0.54 0.60 rg 50 747 115 4 re f
-0.78 0.82 0.86 RG 0.6 w 50 50 m 545 50 l S
-BT /F2 9 Tf 0.62 0.86 0.90 rg 1 0 0 1 50 801 Tm (INFILTRATOR / ORIGINAL FILESYSTEM HISTORY AND DESIGN) Tj ET
-BT /F2 19 Tf 1 1 1 rg 1 0 0 1 50 771 Tm (BeOS File System) Tj ET
-BT /F1 8 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 34 Tm (Filesystem-BeFS / engineering reference) Tj ET
-BT /F1 8 Tf 0.07 0.16 0.23 rg 1 0 0 1 512 34 Tm (PAGE 10) Tj ET
-BT /F2 14 Tf 0.02 0.45 0.50 rg 1 0 0 1 50 711 Tm (BUILD, INSTALLATION AND RELEASE) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 676 Tm (The target installation is /System/Filesystems/BEFS.so and) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 660 Tm (/System/Resources/Documentation/Filesystem-BeFS.pdf. Neither file is) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 644 Tm (currently distributed by this repository. Once the implementation qualifies,) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 628 Tm (the intended release is a portable amd64 DEB and CPU-native source-first RUN,) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 612 Tm (with GitHub's automatic source archive. No install or build command is) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 596 Tm (advertised before an executable build exists.) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 566 Tm (- New build and implementation code is native C/C++ and shell as appropriate,) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 550 Tm (no Python. The generic amd64 DEB and CPU-native source-downloading RUN are) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 534 Tm (the only manually published release assets; GitHub generates source archives.) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 518 Tm (RUN fetches exact versioned source and pinned Common dependency, verifies) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 502 Tm (integrity, compiles natively and installs the selected package; no source) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 486 Tm (archive or DEB embedded. Release immutable exact-main qualification only. No) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 470 Tm (release exists yet.) Tj ET
-
-%%Page
-0.05 0.13 0.22 rg 0 749 595 93 re f
-0.04 0.54 0.60 rg 50 747 115 4 re f
-0.78 0.82 0.86 RG 0.6 w 50 50 m 545 50 l S
-BT /F2 9 Tf 0.62 0.86 0.90 rg 1 0 0 1 50 801 Tm (INFILTRATOR / ORIGINAL FILESYSTEM HISTORY AND DESIGN) Tj ET
-BT /F2 19 Tf 1 1 1 rg 1 0 0 1 50 771 Tm (BeOS File System) Tj ET
-BT /F1 8 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 34 Tm (Filesystem-BeFS / engineering reference) Tj ET
-BT /F1 8 Tf 0.07 0.16 0.23 rg 1 0 0 1 512 34 Tm (PAGE 11) Tj ET
-BT /F2 14 Tf 0.02 0.45 0.50 rg 1 0 0 1 50 711 Tm (PRIMARY SOURCES AND IMPLEMENTATION STATUS) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 676 Tm (https://github.com/torvalds/linux/tree/v6.12/fs/befs) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 646 Tm () Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 630 Tm (https://github.com/Infiltrator-Projects/Filesystems/tree/101026021d9088d80b7f) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 614 Tm (0f472d9061f0e2c688a3/native/filesystems/befs) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 584 Tm () Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 568 Tm (https://github.com/Infiltrator-Projects/Libraries/blob/main/docs/FILESYSTEM_C) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 552 Tm (OMMON_ABI_V2.md) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 522 Tm (Independently produced endian variants, malformed B+trees and out-of-range) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 506 Tm (datastreams. Compare independent payloads and unchanged-image hashes; inject) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 490 Tm (truncation, corruption and I/O faults. Establish exact-revision ABI, hosted) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 474 Tm (and import-free freestanding qualification, then independently test BOOT and) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 458 Tm (kernel integration. No local build, runtime or packaging qualification is) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 442 Tm (claimed.) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 412 Tm (Source extraction, implementation and release qualification remain) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 396 Tm (outstanding. This is a source-backed engineering reference, not a complete) Tj ET
-BT /F1 10.2 Tf 0.07 0.16 0.23 rg 1 0 0 1 50 380 Tm (original specification.) Tj ET
-
-%%Page
-0.05 0.13 0.22 rg 0 750 595 92 re f
-0.03 0.53 0.58 rg 50 747 120 4 re f
-0.75 0.82 0.86 RG .7 w 50 49 m 545 49 l S
-BT /F2 9 Tf 0.62 0.88 0.91 rg 1 0 0 1 50 803 Tm (INFILTRATOR / FILESYSTEM DESIGN & QUALIFICATION) Tj ET
-BT /F2 17 Tf 1 1 1 rg 1 0 0 1 50 773 Tm (BeFS - format and architecture) Tj ET
-BT /F1 8 Tf 0.34 0.4 0.44 rg 1 0 0 1 50 34 Tm (Filesystem-BeFS | Design-stage reference | 3bf20c572003) Tj ET
-BT /F1 8 Tf 0.34 0.4 0.44 rg 1 0 0 1 505 34 Tm (PAGE 01) Tj ET
-BT /F2 12 Tf 0.02 0.48 0.52 rg 1 0 0 1 50 706 Tm (STATUS / DESIGN CONTRACT) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 681 Tm (This repository is at the design stage. No independent runtime provider, installation) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 665 Tm (package or qualified filesystem operations are claimed. This document is not an) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 649 Tm (installation or user manual.) Tj ET
-BT /F2 12 Tf 0.02 0.48 0.52 rg 1 0 0 1 50 614 Tm (Format scope) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 589 Tm (BeOS filesystem, distinct from SCO BFS. This is a design contract, not a claim of) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 573 Tm (implemented capabilities.) Tj ET
-BT /F2 12 Tf 0.02 0.48 0.52 rg 1 0 0 1 50 538 Tm (On-disk structures and ownership) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 513 Tm (Endian-aware superblock, inode, B+tree directory/attribute indices, datastream) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 497 Tm (direct/indirect runs and file metadata. The single native C/C++ engine owns these) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 481 Tm (format semantics; consumers provide bounded Common V2 host services, never) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 465 Tm (competing parsers.) Tj ET
-BT /F2 11 Tf 0.02 0.48 0.52 rg 1 0 0 1 50 430 Tm (Conceptual provider boundary \(planned\)) Tj ET
-0.91 0.95 0.96 rg 50 385 110 30 re f
-BT /F2 9 Tf 0.08 0.16 0.23 rg 1 0 0 1 57 396 Tm (Native media) Tj ET
-0.03 0.53 0.58 RG 1 w 162 400 m 176 400 l S
-0.91 0.95 0.96 rg 178 385 110 30 re f
-BT /F2 9 Tf 0.08 0.16 0.23 rg 1 0 0 1 185 396 Tm (Bounded host I/O) Tj ET
-0.03 0.53 0.58 RG 1 w 290 400 m 304 400 l S
-0.91 0.95 0.96 rg 306 385 110 30 re f
-BT /F2 9 Tf 0.08 0.16 0.23 rg 1 0 0 1 313 396 Tm (Native engine) Tj ET
-0.03 0.53 0.58 RG 1 w 418 400 m 432 400 l S
-0.91 0.95 0.96 rg 434 385 110 30 re f
-BT /F2 9 Tf 0.08 0.16 0.23 rg 1 0 0 1 441 396 Tm (Common V2) Tj ET
-
-%%Page
-0.05 0.13 0.22 rg 0 750 595 92 re f
-0.03 0.53 0.58 rg 50 747 120 4 re f
-0.75 0.82 0.86 RG .7 w 50 49 m 545 49 l S
-BT /F2 9 Tf 0.62 0.88 0.91 rg 1 0 0 1 50 803 Tm (INFILTRATOR / FILESYSTEM DESIGN & QUALIFICATION) Tj ET
-BT /F2 17 Tf 1 1 1 rg 1 0 0 1 50 773 Tm (BeFS - integrity and failure) Tj ET
-BT /F1 8 Tf 0.34 0.4 0.44 rg 1 0 0 1 50 34 Tm (Filesystem-BeFS | Design-stage reference | 3bf20c572003) Tj ET
-BT /F1 8 Tf 0.34 0.4 0.44 rg 1 0 0 1 505 34 Tm (PAGE 02) Tj ET
-BT /F2 12 Tf 0.02 0.48 0.52 rg 1 0 0 1 50 706 Tm (Integrity and mutation invariants) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 681 Tm (Validate allocation-group geometry, block-run ranges, B+tree node links and key) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 665 Tm (ordering. Preserve attribute types and fail closed for unsupported datastream or) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 649 Tm (journal states. All arithmetic, offsets and lengths are checked before I/O. Writable) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 633 Tm (operations require exclusive access, explicit ordering, flush and) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 617 Tm (interruption/recovery evidence. Read-only operations leave the medium unchanged.) Tj ET
-BT /F2 12 Tf 0.02 0.48 0.52 rg 1 0 0 1 50 582 Tm (Failure and ownership policy) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 557 Tm (Validate before following on-disk references. Unsupported feature combinations,) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 541 Tm (malformed media, unavailable operations and host failures are distinct outcomes.) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 525 Tm (Mutation requires the ownership and ordering conditions in the design; read-only) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 509 Tm (operations must leave the source image unchanged.) Tj ET
-
-%%Page
-0.05 0.13 0.22 rg 0 750 595 92 re f
-0.03 0.53 0.58 rg 50 747 120 4 re f
-0.75 0.82 0.86 RG .7 w 50 49 m 545 49 l S
-BT /F2 9 Tf 0.62 0.88 0.91 rg 1 0 0 1 50 803 Tm (INFILTRATOR / FILESYSTEM DESIGN & QUALIFICATION) Tj ET
-BT /F2 17 Tf 1 1 1 rg 1 0 0 1 50 773 Tm (BeFS - interface and qualification) Tj ET
-BT /F1 8 Tf 0.34 0.4 0.44 rg 1 0 0 1 50 34 Tm (Filesystem-BeFS | Design-stage reference | 3bf20c572003) Tj ET
-BT /F1 8 Tf 0.34 0.4 0.44 rg 1 0 0 1 505 34 Tm (PAGE 03) Tj ET
-BT /F2 12 Tf 0.02 0.48 0.52 rg 1 0 0 1 50 706 Tm (Common V2 boundary) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 681 Tm (Only infiltrator_filesystem_api_v2 is public. Target the genuine) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 665 Tm (PROBE/MOUNT/UNMOUNT/STAT/LIST/READ operations first; negotiate actual) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 649 Tm (supported operation masks. VOLUME, METADATA and DEFRAG operations \(including) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 633 Tm (MAP, PLAN, EXECUTE, VERIFY, RECOVER\) are individually qualified or refused.) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 617 Tm (Test Media uses the same provider's qualified format and namespace operations. No) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 601 Tm (FUSE, legacy ABI, private driver or kernel proxy. Hosted and import-free) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 585 Tm (freestanding profiles share the format engine, with generic environment-specific host) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 569 Tm (services.) Tj ET
-BT /F2 12 Tf 0.02 0.48 0.52 rg 1 0 0 1 50 534 Tm (Independent qualification) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 509 Tm (Exercise independent BeFS images of supported byte orders, multiple datastream) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 493 Tm (levels, directories and attributes; corrupt node pointers and run lengths. Compare) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 477 Tm (file bytes against an independent oracle, hash unchanged read-only images, inject) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 461 Tm (short I/O, corruption and interruption; validate exact published module separately in) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 445 Tm (BOOT and kernel. Use disposable media only. No new independent binary or test pass is) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 429 Tm (claimed.) Tj ET
-
-%%Page
-0.05 0.13 0.22 rg 0 750 595 92 re f
-0.03 0.53 0.58 rg 50 747 120 4 re f
-0.75 0.82 0.86 RG .7 w 50 49 m 545 49 l S
-BT /F2 9 Tf 0.62 0.88 0.91 rg 1 0 0 1 50 803 Tm (INFILTRATOR / FILESYSTEM DESIGN & QUALIFICATION) Tj ET
-BT /F2 17 Tf 1 1 1 rg 1 0 0 1 50 773 Tm (BeFS - engineering acceptance) Tj ET
-BT /F1 8 Tf 0.34 0.4 0.44 rg 1 0 0 1 50 34 Tm (Filesystem-BeFS | Design-stage reference | 3bf20c572003) Tj ET
-BT /F1 8 Tf 0.34 0.4 0.44 rg 1 0 0 1 505 34 Tm (PAGE 04) Tj ET
-BT /F2 12 Tf 0.02 0.48 0.52 rg 1 0 0 1 50 706 Tm (Engineering and release acceptance) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 681 Tm (- A valid CORE descriptor with a real PROBE is mandatory. Every optional operation) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 665 Tm (has its own capability bit and non-null qualified callback; unavailable operations have) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 649 Tm (neither. Recognised format, unsupported feature, corruption, host I/O failure and) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 633 Tm (stale handles remain distinct outcomes. - Use Common's sector-aligned bounded byte) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 617 Tm (helpers. Validate partition extent, logical/physical sector geometry and maximum) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 601 Tm (transfer before reading. Serialize overlapping read/modify/write sectors; request) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 585 Tm (explicit flush barriers. Never infer exclusivity from flags alone; require real exclusive) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 569 Tm (unmounted ownership before formatting or raw mutation. Require the Common entropy) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 553 Tm (service when the format needs a unique identity. - Qualify hosted and import-free) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 537 Tm (freestanding profiles separately; enforce module identity and trust, exact export set) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 521 Tm (and actual packaged bytes. BOOT and kernel are generic loaders; BOOT uses the same) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 505 Tm (file in /EFI/InfiltratorOS/BOOT/drivers_x64/, with the installed canonical copy in) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 489 Tm (/System/Filesystems/. No per-format .ko/.efi, FUSE, proxy, legacy ABI, external) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 473 Tm (formatter or consumer-side parsing substitutes for the engine. - Test Media must) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 457 Tm (format and populate through actual V2 FORMAT/CREATE/WRITE operations; an) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 441 Tm (independent formatter/reader may be a test oracle only, never production fallback.) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 425 Tm (Defragmentation maps, plans, execution, verification and recovery require independent) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 409 Tm (proof of ownership, data preservation and interruption safety. Where not implemented) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 393 Tm (they remain absent. - New build and implementation code is native C/C++ and shell as) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 377 Tm (appropriate, no Python. The generic amd64 DEB and CPU-native source-downloading) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 361 Tm (RUN are the only manually published release assets; GitHub generates source) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 345 Tm (archives. RUN fetches exact versioned source and pinned Common dependency, verifies) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 329 Tm (integrity, compiles natively and installs the selected package; no source archive or) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 313 Tm (DEB embedded. Release immutable exact-main qualification only. No release exists yet.) Tj ET
-BT /F2 12 Tf 0.02 0.48 0.52 rg 1 0 0 1 50 278 Tm (Source and authority) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 253 Tm (Prepared from README.md and native/filesystems/befs/DESIGN.md at revision) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 237 Tm (3bf20c572003887f454dc0cb0828805c5259b930. The editable Markdown design and) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 221 Tm (migration status are authoritative. No test result, release or implemented capability) Tj ET
-BT /F1 10.5 Tf 0.08 0.16 0.23 rg 1 0 0 1 50 205 Tm (is inferred from this reference.) Tj ET
+0.06 0.15 0.23 rg 0 768 595 74 re f
+0.02 0.52 0.56 rg 43 764 90 4 re f
+1 1 1 rg BT /F2 10 Tf 43 811 Td (INFILTRATOR / FILESYSTEM ENGINEERING) Tj ET
+BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
+0.08 0.14 0.20 rg BT /F2 15 Tf 43 736 Td (13. Verification and references) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 706 Td (The original Linux header provides all three magic values, the inode and B-tree) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 692 Td (magic and the twelve-run datastream layout; cross-check both byte orders and) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 678 Td (group-boundary arithmetic.) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 652 Td (Retained original source provenance:) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 638 Td (https://github.com/Infiltrator-Projects/Filesystems/blob/101026021d9088d80b7f0f472d) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 624 Td (9061f0e2c688a3/native/filesystems/befs/linux/befs_fs_types.h \(blob prefix) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 610 Td (8019fde814\).) Tj ET
+0.75 0.80 0.84 RG 43 48 m 552 48 l S
+0.20 0.29 0.36 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 14) Tj ET

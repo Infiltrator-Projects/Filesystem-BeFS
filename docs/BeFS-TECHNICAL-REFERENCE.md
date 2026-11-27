@@ -4,6 +4,8 @@
 
 The Be File System, written for BeOS by Dominic Giampaolo and Cyril Meurillon and introduced in BeOS R3, uses a 64-bit extent-based design with indexed attributes, B+tree directories and metadata journalling. Haiku maintains an open implementation of the format. This is unrelated to SCO UnixWare BFS. The goal is not just storing files: typed metadata and indexes support database-like queries over the namespace. Distinguish baseline BeOS format behaviour from Haiku extensions, and distinguish on-disk capability from the current provider's qualified operations.
 
+The Haiku lineage retains the BeOS attribute-oriented model; it is unrelated to the SCO boot filesystem despite the shared BFS abbreviation.
+
 ## Superblock structure
 
 The superblock is normally at volume byte 512; historical variants require checking alternative placement. All offsets here are relative to its start. The 32-byte volume name begins at 0. Magic 0x42465331 at 32, byte-order marker at 36, block size at 40, block shift at 44. Total and used blocks are 64-bit values at 48 and 56. Inode size at 64, second magic 0xDD121031 at 68, blocks per allocation group at 72, group shift at 76, number of groups at 80, flags at 84. Log block run at 88, 64-bit log start and end at 96 and 104, third magic 0x15B6830E at 112, root and index inode runs at 116 and 124. Check all three magics using the detected byte order.
@@ -40,12 +42,18 @@ A packed node header has left sibling, right sibling and overflow addresses at o
 
 Small attributes may be stored in the inode, using a 32-bit type, 16-bit name size and 16-bit data size followed by the name and data. Larger attributes live in separate attribute objects and streams reached through the inode's attributes run. Their names and types are part of the on-disk semantics. Index trees associate typed attribute values with matching inode identities; duplicate values can refer to multiple objects. Namespace changes and indexed-attribute edits require matching updates to the corresponding indexes. Preserve unsupported attributes rather than silently dropping them. Query results cannot be trusted if the index and inode disagree.
 
+Preserve named attributes, index traversal and ordinary data streams as distinct ownership and interpretation paths. A directory lookup must not treat an attribute index as an ordinary directory tree.
+
 ## Journalling, writes and recovery
 
 The reserved log run is a circular metadata transaction log, with recorded start and end positions. Clean and dirty states are encoded in the volume flags. Mutation must reserve data and metadata, complete required data writes, publish the logged metadata transaction in the format's required order, then checkpoint to its final locations and advance the log. Mounting a dirty volume requires validating and replaying committed records according to the actual implementation; the mere presence of a log is not proof that arbitrary partial writes are safe. Recovery must never overwrite uncommitted or invalid targets. Full log record and commit encoding requires additional source-level verification for writable compatibility.
 
+## Implementation and qualification boundary
+
+The original on-disk specification is independent of the Infiltrator provider. Its sole public interface is Common V2 (https://github.com/Infiltrator-Projects/Libraries/blob/main/docs/FILESYSTEM_COMMON_ABI_V2.md). Discover operation capabilities at runtime; a format signature, source function or export is not proof of qualification. Preserve distinct unsupported-feature, corrupt-media, I/O and stale-handle results. Check host geometry, transfer bounds and overlapping sector updates; require exclusive unmounted ownership and durable flush before raw mutation. Test Media and Defragmenter use the same provider operations, not separate format parsers. Hosted and freestanding profiles, release packages, BOOT and kernel integration require separate exact-source evidence. Current implementation and installation status belongs to this repository's README and qualification records, not the format's historical chronology.
+
 ## Verification and references
 
-Test both byte orders, boundary group sizes, twelve direct extents plus indirect storage, double-indirect limits, inline symlinks, attribute expansion, B+tree splitting and duplicate-index keys. Check bitmap accounting against all file and metadata ownership; compare directory enumeration and file reads against independent BeOS or Haiku images. Exercise dirty-log recovery and interrupted allocation with fault injection. Original reference: Dominic Giampaolo, Practical File System Design: The Be File System, https://www.haiku-os.org/legacy-docs/practical-file-system-design.pdf . Cross-check Haiku src/add-ons/kernel/file_systems/bfs and Linux fs/befs/befs_fs_types.h and btree.c. The historical appendices describe the provider at earlier dates, not present qualification.
+The original Linux header provides all three magic values, the inode and B-tree magic and the twelve-run datastream layout; cross-check both byte orders and group-boundary arithmetic.
 
-The PDF preserves both earlier documents as explicitly historical appendices.
+Retained original source provenance: https://github.com/Infiltrator-Projects/Filesystems/blob/101026021d9088d80b7f0f472d9061f0e2c688a3/native/filesystems/befs/linux/befs_fs_types.h (blob prefix 8019fde814).
