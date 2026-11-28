@@ -57,3 +57,7 @@ Test both byte orders, boundary group sizes, twelve direct extents plus indirect
 The original Linux header provides all three magic values, the inode and B-tree magic and the twelve-run datastream layout; cross-check both byte orders and group-boundary arithmetic.
 
 Retained original source provenance: https://github.com/Infiltrator-Projects/Filesystems/blob/101026021d9088d80b7f0f472d9061f0e2c688a3/native/filesystems/befs/linux/befs_fs_types.h (blob prefix 8019fde814).
+
+### Common V2 physical allocation queries
+
+The provider decodes allocation-group bitmap words in the disk byte order. ALLOCATION.MAP returns consecutive partition-relative byte ranges from the requested byte. The geometry beyond the filesystem is reserved. The last range ends at the end of the host partition. A complete scan of the test image reconciles with the mounted free-byte count.

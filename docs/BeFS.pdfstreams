@@ -77,6 +77,12 @@ BT /F2 22 Tf 43 784 Td (BeFS - technical reference) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 622 Td (locality near related metadata. On free, update bitmap and used-block accounting) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 608 Td (together under the transaction mechanism. Independently reconstruct ownership to) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 594 Td (detect false-free sectors or overlaps.) Tj ET
+0.08 0.14 0.20 rg BT /F2 13 Tf 43 562 Td (Common V2 physical maps) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 539 Td (ALLOCATION.MAP reads each allocation-group bitmap word in the disk's byte) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 525 Td (order. A set bit denotes an occupied block. A byte cursor can start inside a) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 511 Td (block. The range after the declared filesystem geometry is reserved. Both) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 497 Td (endian fixtures check the classification of every block against the bitmap) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 483 Td (written into the image.) Tj ET
 0.2 0.3 0.4 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 5) Tj ET
 
 %%Page

@@ -7,11 +7,11 @@ BASE = -std=c11 -Wall -Wextra -Werror -I$(COMMON_INCLUDE)
 SRC = native/filesystems/befs/befs.c
 .PHONY: all firmware carrier check clean
 all: build/BEFS.so
-build/BEFS.so: $(SRC) Makefile
+build/BEFS.so: $(SRC) $(COMMON_INCLUDE)/infiltratr/filesystem_block_map_v2.h Makefile
 	mkdir -p build
 	$(CC) $(BASE) $(CFLAGS) -fPIC -fvisibility=hidden -shared -Wl,-z,defs -o $@ $<
 firmware: build/firmware/BEFS.so
-build/firmware/BEFS.so: $(SRC) module/firmware/CMakeLists.txt Makefile
+build/firmware/BEFS.so: $(SRC) $(COMMON_INCLUDE)/infiltratr/filesystem_block_map_v2.h module/firmware/CMakeLists.txt Makefile
 	cmake -S module/firmware -B build/firmware -DCMAKE_C_FLAGS= -DCOMMON_INCLUDE_DIR="$(abspath $(COMMON_INCLUDE))"
 	cmake --build build/firmware
 	test "$$(nm -D --defined-only $@ | awk '{print $$3}')" = infiltrator_filesystem_api_v2
@@ -22,7 +22,7 @@ carrier: all firmware
 	$(OBJCOPY) --dump-section .infiltrator_boot=build/carrier/verify.elf build/carrier/BEFS.so build/carrier/verify-carrier.elf
 	cmp build/firmware/BEFS.so build/carrier/verify.elf
 	rm build/carrier/verify.elf build/carrier/verify-carrier.elf
-build/test_befs: tests/test_befs.c Makefile
+build/test_befs: tests/test_befs.c Libraries/tests/filesystem_allocation_pages.h Makefile
 	mkdir -p build
 	$(CC) $(BASE) $(CFLAGS) -o $@ $< -ldl
 check: carrier build/test_befs
